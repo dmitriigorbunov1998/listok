@@ -1,0 +1,28 @@
+{
+  "tasks": [
+    {
+      "taskId": "DOC-0",
+      "title": "[Parser] Добавить новый парсер docdoc",
+      "status": "done",
+      "createAt": "21.06.2025",
+      "assigner": "Горбунов Дмитрий Сергеевич",
+      "projectId": 1
+    },
+    {
+      "taskId": "DOC-1",
+      "title": "[Parser]: Написать защиту от капчи",
+      "status": "inProgress",
+      "createAt": "22.06.2025",
+      "assigner": "Горбунов Дмитрий Сергеевич",
+      "projectId": 1
+    },
+    {
+      "taskId": "DOC-2",
+      "title": "[Parser]: Добавить обновление врача",
+      "status": "review",
+      "createAt": "22.06.2025",
+      "assigner": "Ефименко Вадим Валерьевич",
+      "projectId": 1
+    }
+  ]
+}

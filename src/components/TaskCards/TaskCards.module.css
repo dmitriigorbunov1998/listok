@@ -1,0 +1,97 @@
+/* TaskCards.module.css */
+.container {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.cardContainer {
+    padding: 12px 4px 12px 12px;
+}
+
+.card {
+    align-content: flex-start;
+    width: 295px;
+    height: 152px;
+    border-radius: 16px;
+    background-color: #EDEDED;
+    font-family: 'SF Pro Display', sans-serif;
+}
+
+.rowTask {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.taskId {
+    color: #2A72F8;
+}
+
+.title {
+    color: #000000;
+    font-weight: 700;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.rowAssigner {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 8px;
+    align-items: center;
+}
+
+.assigner {
+    color: #2A72F8;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    margin-left: 8px;
+}
+
+.rowLocation {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: rgba(8, 8, 8, 0.56);
+    height: 18px;
+    width: 77px;
+    background-color: rgba(8, 8, 8, 0.06);
+    border-radius: 4px;
+    padding: 1px 4px 1px 4px;
+    margin-top: 8px;
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+}
+
+.location {
+    padding-left: 6px;
+}
+
+.rowDate {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    background: rgba(8, 8, 8, 0.06);
+    height: 18px;
+    width: 118px;
+    border-radius: 4px;
+    padding: 1px 4px 1px 4px;
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+}
+
+.clock {
+    color: rgba(8, 8, 8, 0.56);
+}
+
+.date {
+    color: rgba(8, 8, 8, 0.56);
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+    padding-left: 6px;
+}
