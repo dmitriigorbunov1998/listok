@@ -1,14 +1,16 @@
-import { TaskCards } from '@/src/components/TaskCards';
-import { Menu } from '@/src/components/Menu';
-import styles from './globals.module.css';
+'use client';
+
+import { Content } from '@/src/components/Content';
+import './index.css';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 export default function Home() {
   return (
-    <main>
-        <div className={styles.rowMenu}>
-            <Menu />
-            <TaskCards />
-        </div>
-    </main>
+      <Router>
+          <main>
+              <Content />
+          </main>
+      </Router>
   );
 }

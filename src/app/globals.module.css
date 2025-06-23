@@ -25,9 +25,3 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* globals.module.css */
-.rowMenu {
-  display: flex;
-  flex-direction: row;
-  /* другие стили */
-}

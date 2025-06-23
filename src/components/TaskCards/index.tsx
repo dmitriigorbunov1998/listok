@@ -1,8 +1,8 @@
 import data from './taskCardsData.json';
 import styles from './TaskCards.module.css';
 import { Status } from '@/src/components/Status';
-import { Avatar } from "antd";
-import { ClockCircleOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { Avatar } from 'antd';
+import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
 
 interface Task {
     taskId: string;
