@@ -1,5 +1,5 @@
-import { TaskCards } from '@/src/components/TaskCards';
-import { Menu } from '@/src/components/Menu';
+import { TaskCards } from '@/src/components/TaskCards/TaskCards';
+import { Menu } from '@/src/components/Menu/Menu';
 import styles from './Content.module.css';
 
 export const Content = () => {

@@ -9,6 +9,7 @@
 .data {
     display: flex;
     padding: 10px;
+    cursor: pointer;
 }
 
 .title {
@@ -23,4 +24,8 @@
 .data:hover {
     background: #EDEDED;
     border-radius: 10px;
+}
+
+.data:active {
+    transform: scale(0.95);
 }
