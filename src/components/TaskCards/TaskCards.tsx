@@ -1,8 +1,12 @@
+'use client';
+
 import data from './taskCardsData.json';
 import styles from './TaskCards.module.css';
-import { Status } from '@/src/components/Status';
-import { Avatar } from "antd";
-import { ClockCircleOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { Status } from '@/src/components/Status/Status';
+import { Avatar } from 'antd';
+import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
 interface Task {
     taskId: string;
@@ -16,6 +20,29 @@ interface Task {
 interface TasksData {
     tasks: Task[];
 }
+
+interface TasksProps {
+    projectId: string;
+}
+
+const TasksPage = ({ projectId }: TasksProps) => {
+    const [tasks, setTasks] = useState<Task[]>([]);
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const response = await axios.get(
+                    `https://tasky.ru/api/tasks/?projectId=${projectId}`
+                );
+                setTasks(response.data.tasks);
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        };
+
+        fetchTasks();
+    }, [projectId]);
+};
 
 const normalizeStatuses = (rawData: any): TasksData => ({
     ...rawData,
