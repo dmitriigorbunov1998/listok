@@ -14,7 +14,7 @@ export const Menu = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.title}>МЕНЮ</div>
+            <div className={styles.title}>Team To Do</div>
             <div className={styles.data}>
                 <MailOutlined />
                 <div className={styles.titles} onClick={handleClick}>Задачи</div>

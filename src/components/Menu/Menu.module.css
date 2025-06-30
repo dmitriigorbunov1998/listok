@@ -15,6 +15,7 @@
 .title {
     padding: 10px;
     font-size: 20px;
+    background: #2A72F8 !important;
 }
 
 .titles {
@@ -23,7 +24,6 @@
 
 .data:hover {
     background: #EDEDED;
-    border-radius: 10px;
 }
 
 .data:active {

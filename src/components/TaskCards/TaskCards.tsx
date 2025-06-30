@@ -48,7 +48,7 @@ const normalizeStatuses = (rawData: any): TasksData => ({
     ...rawData,
     tasks: rawData.tasks.map((task: Task) => ({
         ...task,
-        status: ["done", "inProgress", "review", "todo"].includes(task.status) ? task.status : "unknown"
+        status: ["done", "inProgress", "review", "todo"].includes(task.status) ? task.status : "todo"
     }))
 });
 
