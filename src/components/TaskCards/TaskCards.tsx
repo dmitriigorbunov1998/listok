@@ -11,7 +11,7 @@ import axios from 'axios';
 interface Task {
     taskId: string;
     title: string;
-    status: 'done' | 'review' | 'inProgress' | 'todo';
+    status: string;
     createAt: string;
     assigner: string;
     projectId: string;
