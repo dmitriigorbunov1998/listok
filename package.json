@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.51.0",
     "antd": "^5.26.1",
     "axios": "^1.10.0",
     "lightningcss": "^1.30.1",
