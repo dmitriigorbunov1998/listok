@@ -1,0 +1,75 @@
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardContainer {
+    padding: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rowStatus {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.taskId {
+    font-weight: 600;
+    color: #666;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+    flex-grow: 1;
+}
+
+.rowAssigner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.assigner {
+    font-size: 14px;
+    color: #666;
+}
+
+.data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.rowLocation, .rowDate {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rowLocationText, .rowDateText {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #888;
+}
+
+.location, .date {
+    font-size: 12px;
+}

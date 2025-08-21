@@ -1,9 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Content } from '@/src/components/Content/Content';
+import { Content } from '@/components/Content/Content'; // Убрали /src
 import './index.css';
-import { Route, Routes } from "react-router";
+import { Route, Routes } from 'react-router';
 
 const BrowserRouter = dynamic(
     () => import('react-router-dom').then((mod) => mod.BrowserRouter),

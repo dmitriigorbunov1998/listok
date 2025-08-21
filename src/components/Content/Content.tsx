@@ -1,5 +1,5 @@
-import { TaskCards } from '@/src/components/TaskCards/TaskCards';
-import { Menu } from '@/src/components/Menu/Menu';
+import { TaskCards } from '@/components/TaskCards/TaskCards'; // Убрали /src
+import { Menu } from '@/components/Menu/Menu'; // Убрали /src
 import styles from './Content.module.css';
 import { useCallback, useEffect, useState } from 'react';
 import axios from "axios";
@@ -14,7 +14,6 @@ export const Content = () => {
     const getUsers = useCallback(async () => {
         try {
             const usersResponse = await axios.get('/api/users');
-
             setUsers(usersResponse.data);
         } catch (error) {
             console.error(error);
