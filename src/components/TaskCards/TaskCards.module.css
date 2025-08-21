@@ -64,6 +64,7 @@
     background: rgba(8, 8, 8, 0.06);
     border-radius: 4px;
     margin-top: 8px;
+    width: max-content;
 }
 
 .rowLocationText {
@@ -88,6 +89,7 @@
     margin-top: 8px;
     background: rgba(8, 8, 8, 0.06);
     border-radius: 4px;
+    width: max-content;
 }
 
 .rowDateText {

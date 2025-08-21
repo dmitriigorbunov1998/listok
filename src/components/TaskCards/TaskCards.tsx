@@ -8,50 +8,92 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 interface Task {
-   users: any[];
-   projects: any[];
+    users: any[];
+    projects: any[];
 }
 
 export const TaskCards = ({ users }: Task) => {
-    const [tasks, setTasks] = useState<any>([]);
-    const [projects, setProjects] = useState<any>([]);
+    const [tasks, setTasks] = useState<any[]>([]);
+    const [projects, setProjects] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        getUserName();
+    const formatDate = useCallback((dateString: string): string => {
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return dateString; // возвращаем исходную строку если дата невалидна
+            }
+
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear().toString().slice(-2);
+
+            return `${day}.${month}.${year}`;
+        } catch {
+            return dateString;
+        }
     }, []);
 
     const getUserName = useCallback(async () => {
         try {
-            const responseUsers = await axios.get('api/tasks');
-            const responseProjects = await axios.get('api/projects');
+            setLoading(true);
+            setError(null);
+
+            const [responseUsers, responseProjects] = await Promise.all([
+                axios.get('api/tasks'),
+                axios.get('api/projects')
+            ]);
 
             setTasks(responseUsers.data);
             setProjects(responseProjects.data);
-        } catch (error) {
-            console.error(error);
+        } catch (err) {
+            console.error('Error fetching data:', err);
+            setError('Failed to load data');
+        } finally {
+            setLoading(false);
         }
     }, []);
 
-    // 1. Вынести short_name в title карточки c помощью find и useCallback getUserName
-    // 2. Посмотреть ролик Минина на тему хуков (приоритет)
-    // 3. Вынести users.find() и projects.find() в отдельный useCallback getUserName
-    // 4. Разобраться с задваиванием запросом в network и console (Только в данном случае разрешается использовать ИИ)
-    // 5. Добавить try/catch в запросы пользователей в content где users
-    // 6. Перевести текущую дату в вид дд.мм.гггг. с помощью new Date()
+    const getProjectTitle = useCallback((projectId: number) => {
+        const project = projects.find((project: any) => project.id === projectId);
+        return project?.short_name || 'Unknown Project';
+    }, [projects]);
+
+    const getAssigneeName = useCallback((assigneeId: number) => {
+        try {
+            const user = users.find((user: any) => user.id === assigneeId);
+            return user?.name || 'Unknown User';
+        } catch {
+            return 'Unknown User';
+        }
+    }, [users]);
+
+    useEffect(() => {
+        getUserName();
+    }, [getUserName]);
+
+    if (loading) {
+        return <div className={styles.container}>Loading...</div>;
+    }
+
+    if (error) {
+        return <div className={styles.container}>{error}</div>;
+    }
 
     return (
         <div className={styles.container}>
-            {tasks?.map((task:any) => (
+            {tasks?.map((task: any) => (
                 <div key={task.id} className={styles.card}>
                     <div className={styles.cardContainer}>
                         <div className={styles.rowStatus}>
                             <div className={styles.taskId}>{task.id}</div>
                             <Status status={task.status} />
                         </div>
-                        <div className={styles.title}>{projects.find((project:any):boolean => project.id)?.short_name}</div>
+                        <div className={styles.title}>{getProjectTitle(task.project_id)}</div>
                         <div className={styles.rowAssigner}>
                             <Avatar size="small">A</Avatar>
-                            <div className={styles.assigner}>{users.find((user) => user.id === task.assignee_id)?.name}</div>
+                            <div className={styles.assigner}>{getAssigneeName(task.assignee_id)}</div>
                         </div>
                         <div className={styles.data}>
                             <div className={styles.rowLocation}>
@@ -63,7 +105,7 @@ export const TaskCards = ({ users }: Task) => {
                             <div className={styles.rowDate}>
                                 <div className={styles.rowDateText}>
                                     <ClockCircleOutlined />
-                                    <div className={styles.date}>{task.created_at}</div>
+                                    <div className={styles.date}>{formatDate(task.created_at)}</div>
                                 </div>
                             </div>
                         </div>
