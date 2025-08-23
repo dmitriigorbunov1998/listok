@@ -12,18 +12,12 @@
     cursor: pointer;
 }
 
-.title {
-    padding: 10px;
-    font-size: 20px;
-}
-
 .titles {
     padding-left: 10px;
 }
 
 .data:hover {
     background: #EDEDED;
-    border-radius: 10px;
 }
 
 .data:active {

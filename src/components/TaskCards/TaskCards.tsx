@@ -1,73 +1,57 @@
 'use client';
 
-import data from './taskCardsData.json';
 import styles from './TaskCards.module.css';
-import { Status } from '@/src/components/Status/Status';
+import { Status } from '@/components/Status/Status';
 import { Avatar } from 'antd';
 import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import { useEffect, useState } from "react";
-import axios from 'axios';
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 
 interface Task {
-    taskId: string;
-    title: string;
-    status: 'done' | 'review' | 'inProgress' | 'todo';
-    createAt: string;
-    assigner: string;
-    projectId: string;
+    users: any[];
+    projects: any[];
 }
 
-interface TasksData {
-    tasks: Task[];
-}
-
-interface TasksProps {
-    projectId: string;
-}
-
-const TasksPage = ({ projectId }: TasksProps) => {
-    const [tasks, setTasks] = useState<Task[]>([]);
+export const TaskCards = ({ users }: Task) => {
+    const [tasks, setTasks] = useState<any>([]);
+    const [projects, setProjects] = useState<any>([]);
 
     useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const response = await axios.get(
-                    `https://tasky.ru/api/tasks/?projectId=${projectId}`
-                );
-                setTasks(response.data.tasks);
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
-        };
+        getUserName();
+    }, []);
 
-        fetchTasks();
-    }, [projectId]);
-};
+    const getUserName = useCallback(async () => {
+        try {
+            const responseUsers = await axios.get('api/tasks');
+            const responseProjects = await axios.get('api/projects');
 
-const normalizeStatuses = (rawData: any): TasksData => ({
-    ...rawData,
-    tasks: rawData.tasks.map((task: Task) => ({
-        ...task,
-        status: ["done", "inProgress", "review", "todo"].includes(task.status) ? task.status : "unknown"
-    }))
-});
+            setTasks(responseUsers.data);
+            setProjects(responseProjects.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }, []);
 
-const taskData: TasksData = normalizeStatuses(data);
+    // 1. Вынести short_name в title карточки c помощью find и useCallback getUserName
+    // 2. Посмотреть ролик Минина на тему хуков (приоритет)
+    // 3. Вынести users.find() и projects.find() в отдельный useCallback getUserName
+    // 4. Разобраться с задваиванием запросом в network и console (Только в данном случае разрешается использовать ИИ)
+    // 5. Добавить try/catch в запросы пользователей в content где users
+    // 6. Перевести текущую дату в вид дд.мм.гггг. с помощью new Date()
 
-export const TaskCards = () => {
     return (
         <div className={styles.container}>
-            {taskData.tasks.map((task) => (
-                <div key={task.taskId} className={styles.card}>
+            {tasks?.map((task:any) => (
+                <div key={task.id} className={styles.card}>
                     <div className={styles.cardContainer}>
                         <div className={styles.rowStatus}>
-                            <div className={styles.taskId}>{task.taskId}</div>
+                            <div className={styles.taskId}>{task.id}</div>
                             <Status status={task.status} />
                         </div>
-                        <div className={styles.title}>{task.title}</div>
+                        <div className={styles.title}>{projects.find((project:any):boolean => project.id)?.short_name}</div>
                         <div className={styles.rowAssigner}>
                             <Avatar size="small">A</Avatar>
-                            <div className={styles.assigner}>{task.assigner}</div>
+                            <div className={styles.assigner}>{users.find((user) => user.id === task.assignee_id)?.name}</div>
                         </div>
                         <div className={styles.data}>
                             <div className={styles.rowLocation}>
@@ -79,7 +63,7 @@ export const TaskCards = () => {
                             <div className={styles.rowDate}>
                                 <div className={styles.rowDateText}>
                                     <ClockCircleOutlined />
-                                    <div className={styles.date}>{task.createAt}</div>
+                                    <div className={styles.date}>{task.created_at}</div>
                                 </div>
                             </div>
                         </div>
