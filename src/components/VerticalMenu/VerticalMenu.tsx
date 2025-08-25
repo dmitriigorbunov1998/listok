@@ -1,23 +1,41 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './VerticalMenu.module.css';
-import { MailOutlined } from '@ant-design/icons';
-import { useRouter } from "next/navigation";
+import { CreateTaskButton } from "@/components/CreateTaskButton/CreateTaskButton";
+import { TaskModalWindow } from "@/components/TaskModalWindow/TaskModalWindow";
+import { useUsers } from '@/hooks/useUsers';
 
 export const VerticalMenu = () => {
-    const router = useRouter();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const { users, loading, error } = useUsers();
 
-    const handleClick = () => {
-        router.push('/tasks');
-    }
+    const showModal = () => setIsModalVisible(true);
+    const handleClose = () => setIsModalVisible(false);
+
+    const handleCreateTask = async (taskData: any) => {
+        try {
+            console.log('Создание задачи:', taskData);
+            handleClose();
+        } catch (error) {
+            console.error('Ошибка при создании задачи:', error);
+        }
+    };
+
+    if (loading) return <div>Загрузка...</div>;
+    if (error) return <div>Ошибка: {error}</div>;
 
     return (
         <div className={styles.container}>
             <div className={styles.data}>
-                <MailOutlined />
-                <div className={styles.titles} onClick={handleClick}>Задачи</div>
+                <CreateTaskButton onClick={showModal} />
+                <TaskModalWindow
+                    isVisible={isModalVisible}
+                    onClose={handleClose}
+                    onCreate={handleCreateTask}
+                    users={users}
+                />
             </div>
         </div>
-    )
+    );
 };

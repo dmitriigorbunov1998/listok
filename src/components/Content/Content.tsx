@@ -1,41 +1,13 @@
-import { TaskCards } from '@/components/TaskCards/TaskCards';
 import { VerticalMenu } from '@/components/VerticalMenu/VerticalMenu';
+import { TaskCards } from '@/components/TaskCards/TaskCards';
 import styles from './Content.module.css';
-import { useCallback, useEffect, useState } from 'react';
-import axios from "axios";
+import { useUsers } from '@/hooks/useUsers';
 
-// Интерфейс пользователя (User):
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-// Интерфейс пропсов компонента TaskCards:
-export interface TaskCardsProps {
-    users: User[]; // меняем props на users
-}
-
-// Основной компонент Content:
 export const Content = () => {
-    const [users, setUsers] = useState<User[]>([]);
+    const { users, loading, error } = useUsers();
 
-    useEffect(() => {
-        getUsers();
-    }, []);
-
-    const getUsers = useCallback(async () => {
-        try {
-            const response = await axios.get('/api/users');
-            if (response.status === 200) {
-                setUsers(response.data);
-            } else {
-                console.error("Ошибка при загрузке пользователей:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Ошибка при загрузке пользователей:", error);
-        }
-    }, []);
+    if (loading) return <div>Загрузка...</div>;
+    if (error) return <div>Ошибка: {error}</div>;
 
     return (
         <div className={styles.content}>
