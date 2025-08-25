@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Content } from '@/components/Content/Content'; // Убрали /src
+import { Content } from '@/components/Content/Content';
 import './index.css';
 import { Route, Routes } from 'react-router';
 
