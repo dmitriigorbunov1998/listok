@@ -21,7 +21,3 @@ export interface Task {
     updated_at: string;
     assignee_id: number;
 }
-
-export interface TaskCardsProps {
-    users: User[];
-}

@@ -1,3 +1,4 @@
+// hooks/useUsers.ts
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { User } from '@/types';
@@ -13,7 +14,6 @@ export const useUsers = () => {
         try {
             console.log('Fetching users...');
             const response = await axios.get('/api/users');
-
             console.log('Users response:', response.data);
 
             if (response.status === 200) {
