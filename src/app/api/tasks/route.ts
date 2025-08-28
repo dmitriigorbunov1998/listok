@@ -15,7 +15,7 @@ export async function GET() {
             );
         }
 
-        console.log('Tasks data received:', data); // Для отладки
+        console.log('Tasks data received:', data);
         return NextResponse.json(data);
     } catch (error) {
         console.error('Internal server error:', error);
