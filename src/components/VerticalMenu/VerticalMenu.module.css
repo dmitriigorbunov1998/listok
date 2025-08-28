@@ -1,21 +1,25 @@
-.container {
-    display: inline-block;
-    padding: 5px;
-    box-sizing: border-box;
-    width: max-content;
-    background: #ffffff;
-}
-
-.data {
+.menuContainer {
+    height: 100vh;
     display: flex;
-    padding: 10px;
-    cursor: pointer;
+    flex-direction: column;
+    width: 250px;
 }
 
-.titles {
-    padding-left: 10px;
+.menu {
+    border-right: none;
+    background: transparent;
+    flex: 1;
+    overflow-y: auto;
 }
 
-.data:active {
-    transform: scale(0.95);
+.menu :global(.ant-menu-item) {
+    border-radius: 8px;
+}
+
+.menu :global(.ant-menu-item-selected) {
+    background-color: #f0f5ff;
+}
+
+.menu :global(.ant-menu-item:hover) {
+    background-color: #f5f5f5;
 }
