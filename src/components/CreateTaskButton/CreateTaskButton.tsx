@@ -14,7 +14,7 @@ export const CreateTaskButton = ({ onClick }: CreateTaskButtonProps) => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={onClick}
-            className={styles.createButton}
+            className={styles.button}
         >
             Создать задачу
         </Button>
