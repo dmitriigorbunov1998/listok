@@ -1,26 +1,44 @@
 'use client';
 
 import { Modal, Form, Input, Select, Button } from 'antd';
-import { User } from '@/types';
+import { Project, User } from '@/types';
 
 interface TaskModalWindowProps {
     isVisible: boolean;
     onClose: () => void;
-    onCreate: (taskData: any) => void;
     users: User[];
+    projects: Project[];
 }
 
 export const TaskModalWindow = ({
-                                    isVisible,
-                                    onClose,
-                                    onCreate,
-                                    users
-                                }: TaskModalWindowProps) => {
+    isVisible,
+    onClose,
+    users,
+    projects,
+}: TaskModalWindowProps) => {
     const [form] = Form.useForm();
 
     const handleSubmit = () => {
         form.validateFields().then(values => {
-            onCreate(values);
+            fetch('/api/createTask', {
+                method: 'POST',
+                headers: {
+                    contentType: 'application/json'
+                },
+                body: JSON.stringify({
+                    ...values,
+                    creatorId: 1, // Временно
+                }),
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw Error('Ошибка при выполнении запроса');
+                }
+            }).then((data) => {
+                console.log(data);
+                onClose();
+            })
             form.resetFields();
         });
     };
@@ -28,7 +46,7 @@ export const TaskModalWindow = ({
     return (
         <Modal
             title="Создание новой задачи"
-            open={isVisible} // Заменяем visible на open
+            open={isVisible}
             onCancel={onClose}
             footer={[
                 <Button key="cancel" onClick={onClose}>
@@ -52,6 +70,20 @@ export const TaskModalWindow = ({
                 </Form.Item>
 
                 <Form.Item
+                    name="projectId"
+                    label="Проект"
+                    rules={[{ required: true, message: 'Выберите проект' }]}
+                >
+                    <Select placeholder="Выберите проект">
+                        {projects.map(project => (
+                            <Select.Option key={project.id} value={project.id}>
+                                {project.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
                     name="description"
                     label="Описание"
                 >
@@ -59,7 +91,7 @@ export const TaskModalWindow = ({
                 </Form.Item>
 
                 <Form.Item
-                    name="assignee_id"
+                    name="assigneeId"
                     label="Исполнитель"
                     rules={[{ required: true, message: 'Выберите исполнителя' }]}
                 >
@@ -69,17 +101,6 @@ export const TaskModalWindow = ({
                                 {user.name}
                             </Select.Option>
                         ))}
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    name="priority"
-                    label="Приоритет"
-                >
-                    <Select placeholder="Выберите приоритет">
-                        <Select.Option value="low">Низкий</Select.Option>
-                        <Select.Option value="medium">Средний</Select.Option>
-                        <Select.Option value="high">Высокий</Select.Option>
                     </Select>
                 </Form.Item>
             </Form>
