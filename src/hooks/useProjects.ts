@@ -12,13 +12,11 @@ export const useProjects = () => {
         setLoading(true);
         setError(null);
         try {
-            console.log('Fetching projects...');
             const response = await axios.get<Project[]>('/api/projects');
-            console.log('Projects response: ', response.data);
+
             setProjects(response.data);
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-            console.error('Error in useProjects', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
             setError(errorMessage);
         } finally {
             setLoading(false);

@@ -12,13 +12,10 @@ export const useTasks = () => {
         setLoading(true);
         setError(null);
         try {
-            console.log('Fetching tasks...');
             const response = await axios.get('/api/tasks');
-            console.log('Tasks response:', response.data);
             setTasks(response.data);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Неизвестная ошибка';
-            console.error('Error in useTasks:', err);
             setError(errorMessage);
         } finally {
             setLoading(false);
