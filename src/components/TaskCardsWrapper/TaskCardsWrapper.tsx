@@ -7,10 +7,11 @@ import { TaskModalWindow } from "@/components/TaskModalWindow/TaskModalWindow";
 import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
-import { TaskCards } from "@/components/TaskCards/TaskCards";
+import { TaskCard } from "@/components/TaskCard/TaskCard";
 
 export const TaskCardsWrapper = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [cardWidth, setCardWidth] = useState();
     const hasFetchedRef = useRef(false);
 
     // Используем все необходимые хуки
@@ -30,7 +31,6 @@ export const TaskCardsWrapper = () => {
         getUsers();
     }, []);
 
-    // Используем пользователей из пропсов или из хука
     const showModal = useCallback(() => setIsModalVisible(true), []);
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
@@ -56,7 +56,10 @@ export const TaskCardsWrapper = () => {
 
     return (
         <div className={styles.wrapper}>
-            <CreateTaskButton onClick={showModal} />
+            <CreateTaskButton
+                onClick={showModal}
+                style={{ width: cardWidth }}
+            />
             <TaskModalWindow
                 isVisible={isModalVisible}
                 onClose={handleClose}
@@ -64,11 +67,22 @@ export const TaskCardsWrapper = () => {
                 users={users}
                 projects={projects}
             />
-            <TaskCards
-                tasks={tasks}
-                projects={projects}
-                users={users}
-            />
+            <div className={styles.container}>
+                {tasks.map((task, index) => {
+                    const project = projects.find(project => project.id === task.project_id);
+                    const user = users.find(user => user.id === task.assignee_id);
+
+                    return (
+                        <TaskCard
+                            key={task.id}
+                            task={task}
+                            project={project}
+                            user={user}
+                            onWidthChange={index === 0 ? setCardWidth : undefined}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 };

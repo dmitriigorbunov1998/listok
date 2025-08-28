@@ -1,147 +1,21 @@
 /* TaskCardsWrapper.module.css */
-.container {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.card {
-    align-content: flex-start;
-    width: 295px;
-    height: 152px;
-    border-radius: 16px;
-    background-color: #EDEDED;
-    font-family: 'SF Pro Display', sans-serif;
-    margin-top: 12px;
-}
-
-.cardContainer {
-    padding: 12px 4px 12px 12px;
-}
-
-.rowStatus {
+.wrapper {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.taskId {
-    color: #2A72F8;
-}
-
-.title {
-    color: #000000;
-    font-weight: 700;
-    font-size: 12px;
-    margin-top: 8px;
-}
-
-.rowAssigner {
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 8px;
-    align-items: center;
-}
-
-.assigner {
-    color: #2A72F8;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14px;
-    margin-left: 8px;
-}
-
-.data {
-    display: inline-flex;
     flex-direction: column;
-    width: auto;
-}
-
-.rowLocation {
-    display: inline-block;
-    justify-content: center;
     align-items: center;
-    background: rgba(8, 8, 8, 0.06);
-    border-radius: 4px;
-    margin-top: 8px;
+    padding: 10px;
 }
 
-.rowLocationText {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    color: rgba(8, 8, 8, 0.56);
-    padding: 2px 3px 2px 3px;
-    font-size: 10px;
-    line-height: 12px;
-    font-weight: 400;
-}
-
-.location {
-    padding-left: 4px;
-}
-
-.rowDate {
-    display: inline-block;
-    align-items: center;
-    justify-content: center;
-    margin-top: 8px;
-    background: rgba(8, 8, 8, 0.06);
-    border-radius: 4px;
-}
-
-.rowDateText {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    color: rgba(8, 8, 8, 0.56);
-    font-size: 10px;
-    line-height: 12px;
-    font-weight: 400;
-    padding: 2px 3px 2px 3px;
-}
-
-.date {
-    padding-left: 4px;
-}
-
-.loading, .error, .empty {
-    padding: 20px;
-    text-align: center;
-    color: #666;
-}
-
-.error {
-    color: #ff4d4f;
-}
-
-.empty {
-    color: #999;
-}
-
-/* Остальные существующие стили */
 .container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    align-items: center;
 }
 
-.card {
-    border: 1px solid #d9d9d9;
-    border-radius: 8px;
-    padding: 16px;
-    background: white;
-}
-
-.title {
-    font-weight: bold;
-    margin: 8px 0;
-    font-size: 16px;
-}
-
-.project {
-    color: #666;
-    margin-bottom: 12px;
-    font-size: 14px;
+.loading, .error {
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
 }

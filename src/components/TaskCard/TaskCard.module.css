@@ -1,10 +1,4 @@
-/* TaskCards.module.css */
-.container {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* TaskCard.module.css */
 .card {
     align-content: flex-start;
     width: 295px;
@@ -35,6 +29,8 @@
     font-size: 12px;
     margin-top: 8px;
 }
+
+.description {}
 
 .rowAssigner {
     display: flex;
