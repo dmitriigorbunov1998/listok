@@ -2,12 +2,14 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    avatar: string;
+    createdAt: string;
 }
 
 export interface Project {
     id: number;
     name: string;
-    short_name: string;
+    shortName: string;
 }
 
 export interface Task {
@@ -15,9 +17,8 @@ export interface Task {
     title: string;
     description?: string;
     status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-    project_id: number;
-    assigned_to: string;
-    created_at: string;
-    updated_at: string;
-    assignee_id: number;
+    projectId: number;
+    createdAt: string;
+    assigneeId: number;
+    creatorId?: number;
 }
