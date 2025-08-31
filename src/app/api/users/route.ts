@@ -1,5 +1,6 @@
 import { supabase } from '@/app/lib/supabase';
 import { NextResponse } from 'next/server';
+import { changeSnakeToCamelCase } from "@/utils/changeSnakeToCamelCase";
 
 export async function GET() {
     try {
@@ -8,17 +9,26 @@ export async function GET() {
             .select('*');
 
         if (error) {
-            console.error('Supabase users error:', error);
             return NextResponse.json(
                 { error: error.message },
                 { status: 500 }
             );
         }
 
-        console.log('Users data received:', data); // Для отладки
-        return NextResponse.json(data);
+        const camelCaseData = data.map(user => changeSnakeToCamelCase(user));
+
+        /*
+        // Временно на случае ошибок функции changeSnakeToCamelCase
+        const camelCaseData = data.map((user) => {
+            return {
+                ...user,
+                createdAt: user.created_at,
+            }
+        });
+        */
+
+        return NextResponse.json(camelCaseData);
     } catch (error) {
-        console.error('Internal server error:', error);
         return NextResponse.json(
             { error: 'Internal Server Error' },
             { status: 500 }
