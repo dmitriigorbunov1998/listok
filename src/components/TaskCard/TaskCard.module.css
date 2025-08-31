@@ -53,7 +53,7 @@
     width: auto;
 }
 
-.rowLocation {
+.rowProjectName {
     display: inline-block;
     justify-content: center;
     align-items: center;
@@ -62,7 +62,7 @@
     margin-top: 8px;
 }
 
-.rowLocationText {
+.rowProjectNameText {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -73,7 +73,7 @@
     font-weight: 400;
 }
 
-.location {
+.projectName {
     padding-left: 4px;
 }
 

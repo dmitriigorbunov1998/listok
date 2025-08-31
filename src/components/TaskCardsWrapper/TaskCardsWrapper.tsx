@@ -4,14 +4,13 @@ import styles from './TaskCardsWrapper.module.css';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { CreateTaskButton } from "@/components/CreateTaskButton/CreateTaskButton";
 import { TaskModalWindow } from "@/components/TaskModalWindow/TaskModalWindow";
+import { TaskCard } from '@/components/TaskCard/TaskCard';
 import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
-import { TaskCard } from "@/components/TaskCard/TaskCard";
 
 export const TaskCardsWrapper = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [cardWidth, setCardWidth] = useState();
     const hasFetchedRef = useRef(false);
 
     // Используем все необходимые хуки
@@ -34,7 +33,7 @@ export const TaskCardsWrapper = () => {
     const showModal = useCallback(() => setIsModalVisible(true), []);
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
-    const handleCreateTask = useCallback(async (taskData: any) => {
+    const handleCreateTask = useCallback(async () => {
         try {
             handleClose();
         } catch (error) {
@@ -56,10 +55,7 @@ export const TaskCardsWrapper = () => {
 
     return (
         <div className={styles.wrapper}>
-            <CreateTaskButton
-                onClick={showModal}
-                style={{ width: cardWidth }}
-            />
+            <CreateTaskButton onClick={showModal} />
             <TaskModalWindow
                 isVisible={isModalVisible}
                 onClose={handleClose}
@@ -68,9 +64,9 @@ export const TaskCardsWrapper = () => {
                 projects={projects}
             />
             <div className={styles.container}>
-                {tasks.map((task, index) => {
-                    const project = projects.find(project => project.id === task.project_id);
-                    const user = users.find(user => user.id === task.assignee_id);
+                {tasks.map((task) => {
+                    const project = projects.find(project => project.id === task.projectId);
+                    const user = users.find(user => user.id === task.assigneeId);
 
                     return (
                         <TaskCard
@@ -78,7 +74,6 @@ export const TaskCardsWrapper = () => {
                             task={task}
                             project={project}
                             user={user}
-                            onWidthChange={index === 0 ? setCardWidth : undefined}
                         />
                     );
                 })}
