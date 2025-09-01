@@ -2,8 +2,8 @@
 
 import styles from './TaskCardsWrapper.module.css';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { CreateTaskButton } from "@/components/CreateTaskButton/CreateTaskButton";
-import { TaskModalWindow } from "@/components/TaskModalWindow/TaskModalWindow";
+import { CreateTaskButton } from '@/components/CreateTaskButton/CreateTaskButton';
+import { TaskModalWindow } from '@/components/TaskModalWindow/TaskModalWindow';
 import { TaskCard } from '@/components/TaskCard/TaskCard';
 import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
@@ -13,12 +13,10 @@ export const TaskCardsWrapper = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const hasFetchedRef = useRef(false);
 
-    // Используем все необходимые хуки
     const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
     const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
     const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
 
-    // useEffect для загрузки данных
     useEffect(() => {
         if (hasFetchedRef.current) {
             return;
@@ -41,7 +39,6 @@ export const TaskCardsWrapper = () => {
         }
     }, [handleClose]);
 
-    // Проверяем загрузку всех данных
     const isLoading = projectsLoading || tasksLoading || usersLoading;
     const hasError = projectsError || tasksError || usersError;
 
@@ -56,25 +53,14 @@ export const TaskCardsWrapper = () => {
     return (
         <div className={styles.wrapper}>
             <CreateTaskButton onClick={showModal} />
-            <TaskModalWindow
-                isVisible={isModalVisible}
-                onClose={handleClose}
-                onCreate={handleCreateTask}
-                users={users}
-                projects={projects}
-            />
+            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
             <div className={styles.container}>
                 {tasks.map((task) => {
                     const project = projects.find(project => project.id === task.projectId);
                     const user = users.find(user => user.id === task.assigneeId);
 
                     return (
-                        <TaskCard
-                            key={task.id}
-                            task={task}
-                            project={project}
-                            user={user}
-                        />
+                        <TaskCard key={task.id} task={task} project={project} user={user} />
                     );
                 })}
             </div>

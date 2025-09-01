@@ -2,6 +2,7 @@
 
 import { Modal, Form, Input, Select, Button } from 'antd';
 import { Project, User } from '@/types';
+import { useCreateTask } from '@/hooks/useCreateTask';
 
 interface TaskModalWindowProps {
     isVisible: boolean;
@@ -11,32 +12,23 @@ interface TaskModalWindowProps {
     onCreate: () => void;
 }
 
-export const TaskModalWindow = ({isVisible, onClose, users, projects,}: TaskModalWindowProps) => {
+export const TaskModalWindow = ({ isVisible, onClose, users, projects, onCreate }: TaskModalWindowProps) => {
     const [form] = Form.useForm();
+    const { createTask } = useCreateTask();
 
-    const handleSubmit = () => {
-        form.validateFields().then(values => {
-            fetch('/api/createTask', {
-                method: 'POST',
-                headers: {
-                    contentType: 'application/json'
-                },
-                body: JSON.stringify({
-                    ...values,
-                    creatorId: 1, // Временно
-                }),
-            }).then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw Error('Ошибка при выполнении запроса');
-                }
-            }).then((data) => {
-                console.log(data);
+    const handleSubmit = async () => {
+        try {
+            const values = await form.validateFields();
+            const success = await createTask(values);
+
+            if (success) {
+                form.resetFields();
+                onCreate();
                 onClose();
-            })
-            form.resetFields();
-        });
+            }
+        } catch (validationError) {
+            console.error('Validation error:', validationError);
+        }
     };
 
     return (
