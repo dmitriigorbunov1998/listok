@@ -1,6 +1,5 @@
-// hooks/useProjects.ts
-import { useCallback, useState } from "react";
-import axios from "axios";
+import { useCallback, useState } from 'react';
+import axios from 'axios';
 import { Project } from '@/types';
 
 export const useProjects = () => {

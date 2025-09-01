@@ -1,11 +1,6 @@
-import { Tag } from "antd";
-import {
-    CheckCircleOutlined,
-    ClockCircleOutlined,
-    ExclamationCircleOutlined,
-    SyncOutlined
-} from "@ant-design/icons";
-import { useMemo } from "react";
+import { Tag } from 'antd';
+import { CheckCircleOutlined, ClockCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons';
+import { useMemo } from 'react';
 
 interface TaskCardStatusProps {
     status: string;

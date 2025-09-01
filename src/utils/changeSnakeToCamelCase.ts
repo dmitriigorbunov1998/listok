@@ -1,6 +1,3 @@
-/**
- * Преобразует ключи объекта из camelCase в snake_case
- */
 export const changeSnakeToCamelCase = (obj: any): any => {
     const camelCaseObj: any = {}
 

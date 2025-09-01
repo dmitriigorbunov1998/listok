@@ -1,6 +1,6 @@
 import { supabase } from '@/app/lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
-import { changeCamelToSnakeCase } from "@/utils/changeCamelToSnakeCase";
+import { changeCamelToSnakeCase } from '@/utils/changeCamelToSnakeCase';
 
 export async function POST(request: NextRequest)  {
     try {
@@ -19,20 +19,6 @@ export async function POST(request: NextRequest)  {
             .from('tasks')
             .insert(changeCamelToSnakeCase(taskData));
 
-        // Временно на случае ошибок функции changeSnakeToCamelCase
-        /*
-        const { data, error } = await supabase
-            .from('tasks')
-            .insert({
-                title: body.title,
-                status: 'open',
-                project_id: body.projectId,
-                creator_id: body.creatorId,
-                assignee_id: body.assigneeId,
-                description: body.description,
-            });
-
-        */
         if (error) throw error;
 
         return NextResponse.json(

@@ -1,6 +1,6 @@
 import { supabase } from '@/app/lib/supabase';
 import { NextResponse } from 'next/server';
-import { changeSnakeToCamelCase } from "@/utils/changeSnakeToCamelCase";
+import { changeSnakeToCamelCase } from '@/utils/changeSnakeToCamelCase';
 
 export async function GET() {
     try {
@@ -16,16 +16,6 @@ export async function GET() {
         }
 
         const camelCaseData = data.map(user => changeSnakeToCamelCase(user));
-
-        /*
-        // Временно на случае ошибок функции changeSnakeToCamelCase
-        const camelCaseData = data.map((user) => {
-            return {
-                ...user,
-                createdAt: user.created_at,
-            }
-        });
-        */
 
         return NextResponse.json(camelCaseData);
     } catch (error) {

@@ -16,7 +16,7 @@ export interface Task {
     id: number;
     title: string;
     description?: string;
-    status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+    status: 'done' | 'review' | 'inProgress' | 'todo';
     projectId: number;
     createdAt: string;
     assigneeId: number;

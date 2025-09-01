@@ -15,18 +15,7 @@ export async function GET() {
             );
         }
 
-        const camelCaseData = data.map(project => changeSnakeToCamelCase(project))
-
-        /*
-        // Временно на случае ошибок функции changeSnakeToCamelCase
-        const camelCaseData = data.map((project) => {
-            return {
-                ...project,
-                shortName: project.short_name,
-                createdAt: project.created_at,
-            }
-        });
-        */
+        const camelCaseData = data.map(project => changeSnakeToCamelCase(project));
 
         return NextResponse.json(camelCaseData);
     } catch (error) {
