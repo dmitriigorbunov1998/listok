@@ -1,0 +1,25 @@
+.menuContainer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+.menu {
+    border-right: none;
+    background: transparent;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.menu :global(.ant-menu-item) {
+    border-radius: 8px;
+}
+
+.menu :global(.ant-menu-item-selected) {
+    background-color: #f0f5ff;
+}
+
+.menu :global(.ant-menu-item:hover) {
+    background-color: #f5f5f5;
+}

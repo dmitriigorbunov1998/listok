@@ -1,10 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Content } from '@/src/components/Content/Content';
+import { Content } from '@/components/Content/Content';
 import './index.css';
-import { Route, Routes } from "react-router";
-import { TaskPage } from "@/src/components/TaskPage/TaskPage";
+import { Route, Routes } from 'react-router';
 
 const BrowserRouter = dynamic(
     () => import('react-router-dom').then((mod) => mod.BrowserRouter),
@@ -16,8 +15,7 @@ export default function Home() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Content />} />
-                <Route path='/tasks/DOC-0' element={<TaskPage />} />
             </Routes>
         </BrowserRouter>
     );
-}
+};
