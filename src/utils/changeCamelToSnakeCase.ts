@@ -1,26 +1,23 @@
-export const changeCamelToSnakeCase = (obj: Record<string, number | string>) => {
-    let arrayOfKeys = Object.keys(obj);
-    let tempResult = [];
-    let result: Record<string, number | string> = {};
-
-    let tempWord = '';
+export const changeCamelToSnakeCase = (camelCaseObj: Record<string, number | string>) => {
+    let arrayOfKeys = Object.keys(camelCaseObj);
+    let snakeCaseObj: Record<string, number | string> = {};
 
     for (let i = 0; i < arrayOfKeys.length; i++) {
-        for (let j = 0; j < arrayOfKeys[i].length; j++) {
-            if (arrayOfKeys[i] !== arrayOfKeys[i].toUpperCase()) {
-                tempWord = tempWord + arrayOfKeys[i];
+        let originalKey = arrayOfKeys[i];
+        let snakeCaseKey = '';
+
+        for (let j = 0; j < originalKey.length; j++) {
+            let currentKeySymbol = originalKey[j];
+
+            if (currentKeySymbol === currentKeySymbol.toUpperCase()) {
+                snakeCaseKey += `_${currentKeySymbol.toLowerCase()}`;
             } else {
-                tempResult.push(tempWord);
-                tempWord = '';
-                tempWord += arrayOfKeys[i].toLowerCase();
+                snakeCaseKey += currentKeySymbol;
             }
         }
+
+        snakeCaseObj[snakeCaseKey] = camelCaseObj[originalKey];
     }
 
-    tempResult.push(tempWord);
-
-    const joinedKeys = tempResult.join('_');
-    result[joinedKeys] = obj[joinedKeys];
-
-    return result.join;
+    return snakeCaseObj;
 }
