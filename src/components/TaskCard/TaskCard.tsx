@@ -19,7 +19,7 @@ export const TaskCard = ({ task, project, user }: TaskCardProps) => {
                     <div className={styles.taskId}>{project?.shortName}-{task.id}</div>
                     <TaskCardStatus status={task.status} />
                 </div>
-                <div className={styles.title}>
+                <div className={styles.title} title={task.title}>
                     {task.title}
                 </div>
                 <div className={styles.rowAssigner}>

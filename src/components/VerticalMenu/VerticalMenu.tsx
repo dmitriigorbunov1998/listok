@@ -10,7 +10,7 @@ export const VerticalMenu = () => {
         {
             key: 'dashboard',
             icon: <DashboardOutlined />,
-            label: 'Dashboard',
+            label: 'Мои задачи',
         },
         {
             key: 'profile',
