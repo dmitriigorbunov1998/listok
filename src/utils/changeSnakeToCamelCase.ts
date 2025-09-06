@@ -1,17 +1,21 @@
-export const changeSnakeToCamelCase = (obj: any): any => {
-    const camelCaseObj: any = {}
+export const changeSnakeToCamelCase = (obj: Record<string, number | string>) => {
+    let result: Record<string, number | string> = {};
+    let arrayOfKeys = Object.keys(obj);
 
-    Object.keys(obj).forEach(key => {
-        const camelKey = key.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
-        const value = obj[key];
+    for (let i = 0; i < arrayOfKeys.length; i++) {
+        let elem = arrayOfKeys[i].split('_');
 
-        if (value !== null && typeof value === 'object') {
-            camelCaseObj[camelKey] = changeSnakeToCamelCase(value);
-        } else {
-            camelCaseObj[camelKey] = value;
+        let tempResult = [];
+        tempResult.push(elem[0]);
+
+        for (let j = 1; j < elem.length; j++) {
+            tempResult.push(elem[j][0].toUpperCase() + elem[j].slice(1));
         }
-    })
 
-    return camelCaseObj;
-}
+        const joinedKey = tempResult.join('');
 
+        result[joinedKey] = obj[arrayOfKeys[i]];
+    }
+
+    return result;
+};
