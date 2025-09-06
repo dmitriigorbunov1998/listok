@@ -1,16 +1,26 @@
-export const changeCamelToSnakeCase = (obj: any): any => {
-    const snakeCaseObj: any = {};
+export const changeCamelToSnakeCase = (obj: Record<string, number | string>) => {
+    let arrayOfKeys = Object.keys(obj);
+    let tempResult = [];
+    let result: Record<string, number | string> = {};
 
-    Object.keys(obj).forEach(key => {
-        const snakeKey = key.replace(/([A-Z])/g, '_$1').toLowerCase();
-        const value = obj[key];
+    let tempWord = '';
 
-        if (value !== null && typeof value === 'object') {
-            snakeCaseObj[snakeKey] = changeCamelToSnakeCase(value);
-        } else {
-            snakeCaseObj[snakeKey] = value;
+    for (let i = 0; i < arrayOfKeys.length; i++) {
+        for (let j = 0; j < arrayOfKeys[i].length; j++) {
+            if (arrayOfKeys[i] !== arrayOfKeys[i].toUpperCase()) {
+                tempWord = tempWord + arrayOfKeys[i];
+            } else {
+                tempResult.push(tempWord);
+                tempWord = '';
+                tempWord += arrayOfKeys[i].toLowerCase();
+            }
         }
-    })
+    }
 
-    return snakeCaseObj;
+    tempResult.push(tempWord);
+
+    const joinedKeys = tempResult.join('_');
+    result[joinedKeys] = obj[joinedKeys];
+
+    return result.join;
 }
