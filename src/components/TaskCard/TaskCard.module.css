@@ -23,6 +23,12 @@
 }
 
 .title {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 271px;
+    cursor: pointer;
     color: #000000;
     font-weight: 700;
     font-size: 12px;
