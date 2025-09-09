@@ -5,14 +5,7 @@
     padding: 10px;
     max-height: 100vh;
     overflow-y: auto;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-    align-items: center;
+    min-width: max-content;
 }
 
 .loading, .error {
