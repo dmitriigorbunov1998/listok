@@ -54,7 +54,7 @@ export const TaskCardsWrapper = () => {
         <div className={styles.wrapper}>
             <CreateTaskButton onClick={showModal} />
             <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
-            <div className={styles.container}>
+            <div>
                 {tasks.map((task) => {
                     const project = projects.find(project => project.id === task.projectId);
                     const user = users.find(user => user.id === task.assigneeId);
