@@ -8,6 +8,7 @@ import { TaskCard } from '@/components/TaskCard/TaskCard';
 import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
+import { TaskPage } from '@/components/TaskPage/TaskPage';
 
 export const TaskCardsWrapper = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -51,19 +52,30 @@ export const TaskCardsWrapper = () => {
     }
 
     return (
-        <div className={styles.wrapper}>
-            <CreateTaskButton onClick={showModal} />
-            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
-            <div>
-                {tasks.map((task) => {
-                    const project = projects.find(project => project.id === task.projectId);
-                    const user = users.find(user => user.id === task.assigneeId);
+        <div className={styles.taskContent}>
+            <div className={styles.taskInfo}>
+                <div className={styles.taskWrapper}>
+                    <div className={styles.createTaskButton}>
+                        <CreateTaskButton onClick={showModal} />
+                    </div>
+                    <div className={styles.taskCardsWrapper}>
+                        {tasks.map((task) => {
+                            const project = projects.find(project => project.id === task.projectId);
+                            const user = users.find(user => user.id === task.assigneeId);
 
-                    return (
-                        <TaskCard key={task.id} task={task} project={project} user={user} />
-                    );
-                })}
+                            return (
+                                <div className={styles.taskCards}>
+                                    <TaskCard key={task.id} task={task} project={project} user={user} />
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+                <div className={styles.taskPage}>
+                    <TaskPage />
+                </div>
             </div>
+            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
         </div>
     );
 };
