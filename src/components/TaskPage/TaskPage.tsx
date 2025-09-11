@@ -7,16 +7,12 @@ import {
     HomeOutlined,
     InfoCircleOutlined,
     SyncOutlined
-} from '@ant-design/icons';
+}
+from '@ant-design/icons';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, message, Space } from 'antd';
-import React from "react";
-
-const handleMenuClick: MenuProps['onClick'] = (e) => {
-    message.info('Click on menu item.');
-    console.log('click', e);
-};
+import { Button, Dropdown, Space } from 'antd';
+import React from 'react';
 
 const items: MenuProps['items'] = [
     {
@@ -43,9 +39,7 @@ const items: MenuProps['items'] = [
 
 const menuProps = {
     items,
-    onClick: handleMenuClick,
 };
-
 
 export const TaskPage = () => {
     return (

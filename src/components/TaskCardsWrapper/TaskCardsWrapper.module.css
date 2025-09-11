@@ -1,11 +1,35 @@
-.wrapper {
+.taskContent {
+    display: flex;
+    flex-direction: row;
+}
+
+.taskInfo {
+    display: flex;
+    flex-direction: row;
+}
+
+.taskWrapper {}
+
+.createTaskButton {
+    margin: 10px 10px 0 10px;
+}
+
+.taskCardsWrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 10px;
     max-height: 100vh;
     overflow-y: auto;
-    min-width: max-content;
+    padding: 0 8px 0 10px;
+    margin: 10px 0 0 0;
+    gap: 10px;
+}
+
+.taskCards {
+
+}
+
+.taskPage {
+
 }
 
 .loading, .error {
