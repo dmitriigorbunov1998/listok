@@ -2,16 +2,20 @@
 
 import styles from './TaskCardsWrapper.module.css';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { CreateTaskButton } from '@/components/CreateTaskButton/CreateTaskButton';
-import { TaskModalWindow } from '@/components/TaskModalWindow/TaskModalWindow';
-import { TaskCard } from '@/components/TaskCard/TaskCard';
+import { CreateTaskButton } from '@/components/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
+import { TaskModalWindow } from '@/components/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
+import { TaskCard } from '@/components/TaskCardsWrapper/TaskCard/TaskCard';
 import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
-import { TaskPage } from '@/components/TaskPage/TaskPage';
+import { TaskPage } from '@/components/TaskCardsWrapper/TaskPage/TaskPage';
+import { Task } from '@/types';
+import { Empty } from 'antd';
 
 export const TaskCardsWrapper = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
     const hasFetchedRef = useRef(false);
 
     const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
@@ -30,6 +34,9 @@ export const TaskCardsWrapper = () => {
     }, []);
 
     const showModal = useCallback(() => setIsModalVisible(true), []);
+    const onCardClick = useCallback((card: any) => {
+        setSelectedTask(card);
+    }, []);
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
     const handleCreateTask = useCallback(async () => {
@@ -64,15 +71,26 @@ export const TaskCardsWrapper = () => {
                             const user = users.find(user => user.id === task.assigneeId);
 
                             return (
-                                <div className={styles.taskCards}>
-                                    <TaskCard key={task.id} task={task} project={project} user={user} />
+                                <div className={styles.taskCards} key={`${task.title}-${task.id}`}>
+                                    <TaskCard
+                                        task={task}
+                                        project={project}
+                                        user={user}
+                                        onClick={(() => onCardClick(task))}
+                                    />
                                 </div>
                             );
                         })}
                     </div>
                 </div>
                 <div className={styles.taskPage}>
-                    <TaskPage />
+                    {selectedTask ? (
+                        selectedTask?.title ? (
+                            <TaskPage selectedTask={selectedTask} projects={projects} users={users} />
+                        ) : (
+                            <Empty />
+                        )
+                    ) : null}
                 </div>
             </div>
             <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
