@@ -1,0 +1,117 @@
+/* Общие стили */
+body {
+    font-family: 'SF Pro Display', sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: rgba(8, 8, 8, 0.96);
+}
+
+/* Основной контейнер страницы */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 86px 24px 64px;
+    max-width: 1200px;
+    min-height: calc(100vh - 20px);;
+}
+
+/* Хлебные крошки */
+.breadcrumbTaskText {
+    font-weight: 400;
+    color: rgba(42, 114, 248, 0.88);
+}
+
+/* Заголовок задачи */
+.taskTitleText {
+    font-weight: 590;
+    font-size: 36px;
+    line-height: 36px;
+    margin-top: 8px;
+}
+
+/* Панель действий над задачей */
+.taskDescriptionInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.taskDropDown {
+    margin-left: 92px;
+    display: flex;
+    align-items: center;
+}
+
+.taskEdit {
+    margin-left: 16px;
+    color: rgba(42, 114, 248, 1);
+}
+
+/* Статус задачи */
+.taskStatus {
+    display: flex;
+    align-items: center;
+    margin-top: 28px;
+    color: rgba(140, 140, 140, 1);
+}
+
+.taskStatus > * + * {
+    margin-left: 8px;
+}
+
+.taskStatusTextDynamic {
+    color: inherit;
+}
+
+/* Исполнитель и автор задачи */
+.taskAssignee,
+.taskCreator {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: rgba(140, 140, 140, 1);
+}
+
+.taskAssignee > * + *,
+.taskCreator > * + * {
+    margin-left: 8px;
+}
+
+.taskAssigneeTextDynamic,
+.taskCreatorTextDynamic {
+    color: rgba(42, 114, 248, 1);
+}
+
+/* Дата создания задачи */
+.taskCreated {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: rgba(140, 140, 140, 1);
+}
+
+.taskCreated > * + * {
+    margin-left: 8px;
+}
+
+.taskCreatedTextDynamic {
+    color: rgba(42, 114, 248, 1);
+}
+
+/* Описание задачи */
+.taskDescriptionTitle {
+    display: flex;
+    align-items: center;
+    color: rgba(140, 140, 140, 1);
+    margin-top: 42px;
+}
+
+.taskDescriptionTitle > * + * {
+    margin-left: 8px;
+}
+
+.taskDescriptionText {
+    margin-top: 8px;
+    color: rgba(0, 0, 0, 0.75);
+}

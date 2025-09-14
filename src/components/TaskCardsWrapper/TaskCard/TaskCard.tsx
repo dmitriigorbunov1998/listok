@@ -1,5 +1,5 @@
 import styles from './TaskCard.module.css';
-import { TaskCardStatus } from '@/components/TaskCardStatus/TaskCardStatus';
+import { TaskCardStatus } from '@/components/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { Avatar } from 'antd';
 import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import React from 'react';
@@ -9,11 +9,12 @@ export interface TaskCardProps {
     task: Task;
     project?: Project;
     user?: User;
+    onClick: () => void;
 }
 
-export const TaskCard = ({ task, project, user }: TaskCardProps) => {
+export const TaskCard = ({ task, project, user, onClick }: TaskCardProps) => {
     return (
-        <div className={styles.card}>
+        <div className={styles.card} onClick={onClick}>
             <div className={styles.cardContainer}>
                 <div className={styles.rowStatus}>
                     <div className={styles.taskId}>{project?.shortName}-{task.id}</div>
