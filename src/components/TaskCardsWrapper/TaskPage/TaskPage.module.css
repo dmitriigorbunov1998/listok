@@ -1,19 +1,15 @@
-/* Общие стили */
-body {
-    font-family: 'SF Pro Display', sans-serif;
-    font-size: 14px;
-    line-height: 22px;
-    letter-spacing: 0;
-    color: rgba(8, 8, 8, 0.96);
-}
-
 /* Основной контейнер страницы */
 .wrapper {
     display: flex;
     flex-direction: column;
     padding: 24px 86px 24px 64px;
     max-width: 1200px;
-    min-height: calc(100vh - 20px);;
+    min-height: calc(100vh - 20px);
+    font-family: 'SF Pro Display', sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: rgba(8, 8, 8, 0.96);
 }
 
 /* Хлебные крошки */
