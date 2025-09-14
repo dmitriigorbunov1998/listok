@@ -1,7 +1,6 @@
 import styles from './TaskPage.module.css';
-import { Breadcrumb, Flex, Tag} from 'antd';
+import { Breadcrumb } from 'antd';
 import {
-    CheckCircleOutlined,
     ClockCircleOutlined,
     FormOutlined,
     HomeOutlined,
@@ -13,6 +12,9 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
 import React from 'react';
+import { Project, Task, User } from '@/types';
+import { TaskCardStatus } from '@/components/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
+import { formatDateTime } from '@/utils/date';
 
 const items: MenuProps['items'] = [
     {
@@ -41,13 +43,24 @@ const menuProps = {
     items,
 };
 
-export const TaskPage = () => {
+interface TaskPageProps {
+    selectedTask: Task;
+    projects: Project[];
+    users: User[];
+}
+
+export const TaskPage = ({ selectedTask, projects, users }: TaskPageProps) => {
+    const { title, description, id, creatorId, createdAt, status, projectId, assigneeId } = selectedTask;
+    const project = projects.find(project => project.id === projectId);
+    const assigneeUser = users.find(user => user.id === assigneeId);
+    const creatorUser = users.find(user => user.id === creatorId);
+
     return (
         <div className={styles.wrapper}>
             <Breadcrumb
                 items={[
                     {
-                        href: '',
+                        href: '#',
                         title: (
                             <>
                                 <HomeOutlined />
@@ -58,14 +71,14 @@ export const TaskPage = () => {
                     {
                         title: (
                             <>
-                                <div className={styles.breadcrumbTaskText}>LIST-15</div>
+                                <div className={styles.breadcrumbTaskText}>{project?.shortName}-{id}</div>
                             </>
                         )
                     },
                 ]}
             />
             <div className={styles.taskDescriptionInfo}>
-                <div className={styles.taskTitleText}>[Bug] Сделать плашки с проектами карточек универсальной ширины</div>
+                <div className={styles.taskTitleText}>{title}</div>
                 <div className={styles.taskDropDown}>
                     <div className={styles.taskDropDownMenu}>
                         <Dropdown menu={menuProps} className={styles.taskDropDownMenu}>
@@ -84,36 +97,30 @@ export const TaskPage = () => {
                 <SyncOutlined />
                 <div className={styles.taskStatusText}>Статус:</div>
                 <div className={styles.taskStatusTextDynamic}>
-                    <Flex gap="4px 0" wrap>
-                        <Tag icon={<CheckCircleOutlined />} color="success">
-                            Выполнено
-                        </Tag>
-                    </Flex>
+                    <TaskCardStatus status={status} />
                 </div>
             </div>
             <div className={styles.taskAssignee}>
                 <UserOutlined />
                 <div className={styles.taskAssigneeText}>Исполнитель:</div>
-                <div className={styles.taskAssigneeTextDynamic}>Вадим Ефименко</div>
+                <div className={styles.taskAssigneeTextDynamic}>{assigneeUser?.name}</div>
             </div>
             <div className={styles.taskCreator}>
                 <UserOutlined />
                 <div className={styles.taskCreatorText}>Автор:</div>
-                <div className={styles.taskCreatorTextDynamic}>Дмитрий Горбунов</div>
+                <div className={styles.taskCreatorTextDynamic}>{creatorUser?.name}</div>
             </div>
             <div className={styles.taskCreated}>
                 <ClockCircleOutlined />
                 <div className={styles.taskCreatedText}>Создана:</div>
-                <div className={styles.taskCreatedTextDynamic}>2 сентября, 2025, 19:34</div>
+                <div className={styles.taskCreatedTextDynamic}>{formatDateTime(createdAt)}</div>
             </div>
             <div className={styles.taskDescriptionTitle}>
                 <InfoCircleOutlined />
                 <div className={styles.taskDescriptionTitleText}>Описание:</div>
             </div>
             <div className={styles.taskDescriptionText}>
-                Text styles follow website's hierarchy, using the specified font family (SF Pro Text) and its
-                styles. Base styles are applied to components such as buttons, paragraphs, inputs. Headlings
-                serve as titles within components.
+                {description}
             </div>
         </div>
     )

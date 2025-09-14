@@ -5,6 +5,7 @@
     border-radius: 16px;
     background-color: #EDEDED;
     font-family: 'SF Pro Display', sans-serif;
+    cursor: pointer;
 }
 
 .cardContainer {
@@ -33,8 +34,6 @@
     font-size: 12px;
     margin-top: 8px;
 }
-
-.description {}
 
 .rowAssigner {
     display: flex;
