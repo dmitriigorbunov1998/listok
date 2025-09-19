@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './TaskCardsWrapper.module.css';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { CreateTaskButton } from '@/components/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
 import { TaskModalWindow } from '@/components/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
 import { TaskCard } from '@/components/TaskCardsWrapper/TaskCard/TaskCard';
@@ -34,8 +34,8 @@ export const TaskCardsWrapper = () => {
     }, []);
 
     const showModal = useCallback(() => setIsModalVisible(true), []);
-    const onCardClick = useCallback((card: any) => {
-        setSelectedTask(card);
+    const onCardClick = useCallback((id: any) => {
+        setSelectedTask(id);
     }, []);
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
@@ -49,6 +49,8 @@ export const TaskCardsWrapper = () => {
 
     const isLoading = projectsLoading || tasksLoading || usersLoading;
     const hasError = projectsError || tasksError || usersError;
+
+    const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask, tasksLoading]);
 
     if (isLoading) {
         return <div className={styles.loading}>Загрузка...</div>;
@@ -76,7 +78,7 @@ export const TaskCardsWrapper = () => {
                                         task={task}
                                         project={project}
                                         user={user}
-                                        onClick={(() => onCardClick(task))}
+                                        onClick={(() => onCardClick(task.id))}
                                     />
                                 </div>
                             );
@@ -84,9 +86,9 @@ export const TaskCardsWrapper = () => {
                     </div>
                 </div>
                 <div className={styles.taskPage}>
-                    {selectedTask ? (
-                        selectedTask?.title ? (
-                            <TaskPage selectedTask={selectedTask} projects={projects} users={users} />
+                    {visibleTask ? (
+                        visibleTask?.title ? (
+                            <TaskPage getTasks={getTasks} selectedTask={visibleTask} projects={projects} users={users} />
                         ) : (
                             <Empty />
                         )
