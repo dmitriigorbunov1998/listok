@@ -18,7 +18,15 @@
 }
 
 .taskPage {
-    margin: 10px;
+    margin: 10px 10px 0 10px;
+}
+
+.taskPageNoData {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw - 600px);
+    height: calc(100vh - 20px);
 }
 
 .loading, .error {

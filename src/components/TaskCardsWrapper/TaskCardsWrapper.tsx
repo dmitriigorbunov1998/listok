@@ -84,13 +84,11 @@ export const TaskCardsWrapper = () => {
                     </div>
                 </div>
                 <div className={styles.taskPage}>
-                    {selectedTask ? (
-                        selectedTask?.title ? (
-                            <TaskPage selectedTask={selectedTask} projects={projects} users={users} />
-                        ) : (
-                            <Empty />
-                        )
-                    ) : null}
+                    {
+                        selectedTask?.title ? 
+                        <div className={styles.taskPageInfo}><TaskPage selectedTask={selectedTask} projects={projects} users={users} /></div> : 
+                        <div className={styles.taskPageNoData}><Empty /></div>
+                    }
                 </div>
             </div>
             <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
