@@ -11,7 +11,12 @@ import { useProjects } from '@/hooks/useProjects';
 import { TaskPage } from '@/components/TaskCardsWrapper/TaskPage/TaskPage';
 import { Empty } from 'antd';
 
-export const TaskCardsWrapper = () => {
+interface TaskCardsWrapperProps {
+    initialTaskId?: string;
+    onTaskSelect: (taskId: string) => void;
+}
+
+export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapperProps) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
 
@@ -30,12 +35,20 @@ export const TaskCardsWrapper = () => {
         getProjects();
         getTasks();
         getUsers();
+
+        if (initialTaskId) {
+            const selectedTaskId = Number(initialTaskId.split('-')[1]);
+
+            setSelectedTask(selectedTaskId);
+        }
     }, []);
 
     const showModal = useCallback(() => setIsModalVisible(true), []);
-    const onCardClick = useCallback((id: any) => {
+    const onCardClick = useCallback((id: number, projectId: number) => {
+        const selectedTaskProject = projects.find((project) => project.id === projectId);
         setSelectedTask(id);
-    }, []);
+        onTaskSelect(`${selectedTaskProject?.shortName}-${id}`);
+    }, [projects]);
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
     const handleCreateTask = useCallback(async () => {
@@ -77,7 +90,7 @@ export const TaskCardsWrapper = () => {
                                         task={task}
                                         project={project}
                                         user={user}
-                                        onClick={(() => onCardClick(task.id))}
+                                        onClick={(() => onCardClick(task.id, task.projectId))}
                                     />
                                 </div>
                             );
