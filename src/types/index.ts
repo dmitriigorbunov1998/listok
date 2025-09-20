@@ -1,5 +1,3 @@
-import { TaskStatus } from '@/consts';
-
 export interface User {
     id: number;
     name: string;
@@ -18,7 +16,7 @@ export interface Task {
     id: number;
     title: string;
     description?: string;
-    status: TaskStatus;
+    status: 'done' | 'review' | 'inProgress' | 'todo';
     projectId: number;
     createdAt: string;
     assigneeId: number;
