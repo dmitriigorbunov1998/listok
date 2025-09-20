@@ -5,7 +5,7 @@ import { taskStatusLabel } from '@/utils/taskStatusTransitions';
 import { TaskStatus } from '@/consts';
 
 interface TaskCardStatusProps {
-    status: string;
+    status: TaskStatus;
 }
 
 export const TaskCardStatus = ({ status }: TaskCardStatusProps) => {

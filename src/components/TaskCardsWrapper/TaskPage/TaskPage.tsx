@@ -56,7 +56,7 @@ export const TaskPage = ({ selectedTask, projects, users, getTasks }: TaskPagePr
             });
 
             return acc;
-        }, [])
+        }, [] as { key: number, label: React.JSX.Element }[])
     }, []);
 
     const items: MenuProps['items'] = [

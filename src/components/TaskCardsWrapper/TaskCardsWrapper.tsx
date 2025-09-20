@@ -14,7 +14,7 @@ import { Empty } from 'antd';
 
 export const TaskCardsWrapper = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+    const [selectedTask, setSelectedTask] = useState<number | null>(null);
 
     const hasFetchedRef = useRef(false);
 

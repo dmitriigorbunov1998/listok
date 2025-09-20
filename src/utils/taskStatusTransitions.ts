@@ -6,6 +6,8 @@ export const taskStatusTransitions = {
     [TaskStatus.Review]: [TaskStatus.InProgress, TaskStatus.Testing],
     [TaskStatus.Testing]: [TaskStatus.InProgress, TaskStatus.Done],
     [TaskStatus.Done]: [TaskStatus.Closed],
+    [TaskStatus.Closed]: [],
+    [TaskStatus.Rejected]: [TaskStatus.Open],
 }
 
 export const taskStatusLabel = {
