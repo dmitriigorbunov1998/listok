@@ -9,12 +9,11 @@ import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
 import { TaskPage } from '@/components/TaskCardsWrapper/TaskPage/TaskPage';
-import { Task } from '@/types';
 import { Empty } from 'antd';
 
 export const TaskCardsWrapper = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+    const [selectedTask, setSelectedTask] = useState<number | null>(null);
 
     const hasFetchedRef = useRef(false);
 

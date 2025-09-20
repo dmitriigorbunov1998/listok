@@ -1,4 +1,4 @@
-import { TaskStatus } from '@/consts';
+import { TaskStatus } from '@/constants/consts';
 
 export const taskStatusTransitions = {
     [TaskStatus.Open]: [TaskStatus.InProgress, TaskStatus.Rejected],
@@ -6,6 +6,8 @@ export const taskStatusTransitions = {
     [TaskStatus.Review]: [TaskStatus.InProgress, TaskStatus.Testing],
     [TaskStatus.Testing]: [TaskStatus.InProgress, TaskStatus.Done],
     [TaskStatus.Done]: [TaskStatus.Closed],
+    [TaskStatus.Closed]: [],
+    [TaskStatus.Rejected]: [TaskStatus.Open],
 }
 
 export const taskStatusLabel = {

@@ -2,10 +2,10 @@ import { Tag } from 'antd';
 import { CheckCircleOutlined, ClockCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import { useMemo } from 'react';
 import { taskStatusLabel } from '@/utils/taskStatusTransitions';
-import { TaskStatus } from '@/consts';
+import { TaskStatus } from '@/constants/consts';
 
 interface TaskCardStatusProps {
-    status: string;
+    status: TaskStatus;
 }
 
 export const TaskCardStatus = ({ status }: TaskCardStatusProps) => {

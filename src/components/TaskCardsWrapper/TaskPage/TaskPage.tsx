@@ -15,7 +15,7 @@ import React, { useCallback } from 'react';
 import { Project, Task, User } from '@/types';
 import { TaskCardStatus } from '@/components/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { formatDateTime } from '@/utils/date';
-import { TaskStatus } from '@/consts';
+import { TaskStatus } from '@/constants/consts';
 import { taskStatusLabel, taskStatusTransitions } from '@/utils/taskStatusTransitions';
 import { useEditTask } from '@/hooks/useEditTask';
 
@@ -56,7 +56,7 @@ export const TaskPage = ({ selectedTask, projects, users, getTasks }: TaskPagePr
             });
 
             return acc;
-        }, [])
+        }, [] as { key: number, label: React.JSX.Element }[])
     }, []);
 
     const items: MenuProps['items'] = [

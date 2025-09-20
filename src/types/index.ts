@@ -1,4 +1,4 @@
-import { TaskStatus } from '@/consts';
+import { TaskStatus } from '@/constants/consts';
 
 export interface User {
     id: number;
