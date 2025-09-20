@@ -17,7 +17,9 @@ export const TaskCard = ({ task, project, user, onClick }: TaskCardProps) => {
         <div className={styles.card} onClick={onClick}>
             <div className={styles.cardContainer}>
                 <div className={styles.rowStatus}>
-                    <div className={styles.taskId}>{project?.shortName}-{task.id}</div>
+                    <div className={styles.taskId}>
+                        {project?.shortName}-{task.id}
+                    </div>
                     <TaskCardStatus status={task.status} />
                 </div>
                 <div className={styles.title} title={task.title}>

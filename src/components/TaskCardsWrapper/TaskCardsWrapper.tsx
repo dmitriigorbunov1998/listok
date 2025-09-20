@@ -18,9 +18,9 @@ export const TaskCardsWrapper = () => {
 
     const hasFetchedRef = useRef(false);
 
-    const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
-    const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
-    const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
+    const { projects, getProjects } = useProjects();
+    const { tasks, getTasks } = useTasks();
+    const { users, getUsers } = useUsers();
 
     useEffect(() => {
         if (hasFetchedRef.current) {
@@ -34,9 +34,11 @@ export const TaskCardsWrapper = () => {
     }, []);
 
     const showModal = useCallback(() => setIsModalVisible(true), []);
+
     const onCardClick = useCallback((card: any) => {
         setSelectedTask(card);
     }, []);
+
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
     const handleCreateTask = useCallback(async () => {
@@ -47,23 +49,14 @@ export const TaskCardsWrapper = () => {
         }
     }, [handleClose]);
 
-    const isLoading = projectsLoading || tasksLoading || usersLoading;
-    const hasError = projectsError || tasksError || usersError;
-
-    if (isLoading) {
-        return <div className={styles.loading}>Загрузка...</div>;
-    }
-
-    if (hasError) {
-        return <div className={styles.error}>Ошибка загрузки</div>;
-    }
-
     return (
         <div className={styles.taskContent}>
             <div className={styles.taskInfo}>
                 <div className={styles.taskWrapper}>
                     <div className={styles.createTaskButton}>
-                        <CreateTaskButton onClick={showModal} />
+                        <CreateTaskButton
+                            onClick={showModal}
+                        />
                     </div>
                     <div className={styles.taskCardsWrapper}>
                         {tasks.map((task) => {
@@ -71,7 +64,8 @@ export const TaskCardsWrapper = () => {
                             const user = users.find(user => user.id === task.assigneeId);
 
                             return (
-                                <div className={styles.taskCards} key={`${task.title}-${task.id}`}>
+                                <div className={styles.taskCards}
+                                     key={`${task.title}-${task.id}`}>
                                     <TaskCard
                                         task={task}
                                         project={project}
@@ -86,12 +80,25 @@ export const TaskCardsWrapper = () => {
                 <div className={styles.taskPage}>
                     {
                         selectedTask?.title ? 
-                        <div className={styles.taskPageInfo}><TaskPage selectedTask={selectedTask} projects={projects} users={users} /></div> : 
-                        <div className={styles.taskPageNoData}><Empty /></div>
+                        <div className={styles.taskPageInfo}>
+                            <TaskPage
+                                selectedTask={selectedTask}
+                                projects={projects}
+                                users={users}
+                            />
+                        </div> :
+                        <div className={styles.taskPageNoData}>
+                            <Empty />
+                        </div>
                     }
                 </div>
             </div>
-            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
+            <TaskModalWindow
+                isVisible={isModalVisible}
+                onClose={handleClose}
+                onCreate={handleCreateTask}
+                users={users} projects={projects}
+            />
         </div>
     );
 };

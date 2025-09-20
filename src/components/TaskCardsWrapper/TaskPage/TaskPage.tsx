@@ -1,13 +1,6 @@
 import styles from './TaskPage.module.css';
 import { Breadcrumb } from 'antd';
-import {
-    ClockCircleOutlined,
-    FormOutlined,
-    HomeOutlined,
-    InfoCircleOutlined,
-    SyncOutlined
-}
-from '@ant-design/icons';
+import { ClockCircleOutlined, FormOutlined, HomeOutlined, InfoCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
@@ -64,21 +57,25 @@ export const TaskPage = ({ selectedTask, projects, users }: TaskPageProps) => {
                         title: (
                             <>
                                 <HomeOutlined />
-                                <span>Listok</span>
+                                <span>
+                                    Listok
+                                </span>
                             </>
                         )
                     },
                     {
                         title: (
-                            <>
-                                <div className={styles.breadcrumbTaskText}>{project?.shortName}-{id}</div>
-                            </>
+                            <div className={styles.breadcrumbTaskText}>
+                                {project?.shortName}-{id}
+                            </div>
                         )
                     },
                 ]}
             />
             <div className={styles.taskDescriptionInfo}>
-                <div className={styles.taskTitleText}>{title}</div>
+                <div className={styles.taskTitleText}>
+                    {title}
+                </div>
                 <div className={styles.taskDropDown}>
                     <div className={styles.taskDropDownMenu}>
                         <Dropdown menu={menuProps} className={styles.taskDropDownMenu}>
@@ -90,34 +87,46 @@ export const TaskPage = ({ selectedTask, projects, users }: TaskPageProps) => {
                             </Button>
                         </Dropdown>
                     </div>
-                    <div className={styles.taskEdit}><FormOutlined /></div>
+                    <div className={styles.taskEdit}>
+                        <FormOutlined />
+                    </div>
                 </div>
             </div>
             <div className={styles.taskStatus}>
                 <SyncOutlined />
-                <div className={styles.taskStatusText}>Статус:</div>
+                <div className={styles.taskStatusText}>
+                    Статус:
+                </div>
                 <div className={styles.taskStatusTextDynamic}>
                     <TaskCardStatus status={status} />
                 </div>
             </div>
             <div className={styles.taskAssignee}>
                 <UserOutlined />
-                <div className={styles.taskAssigneeText}>Исполнитель:</div>
+                <div className={styles.taskAssigneeText}>
+                    Исполнитель:
+                </div>
                 <div className={styles.taskAssigneeTextDynamic}>{assigneeUser?.name}</div>
             </div>
             <div className={styles.taskCreator}>
                 <UserOutlined />
-                <div className={styles.taskCreatorText}>Автор:</div>
+                <div className={styles.taskCreatorText}>
+                    Автор:
+                </div>
                 <div className={styles.taskCreatorTextDynamic}>{creatorUser?.name}</div>
             </div>
             <div className={styles.taskCreated}>
                 <ClockCircleOutlined />
-                <div className={styles.taskCreatedText}>Создана:</div>
+                <div className={styles.taskCreatedText}>
+                    Создана:
+                </div>
                 <div className={styles.taskCreatedTextDynamic}>{formatDateTime(createdAt)}</div>
             </div>
             <div className={styles.taskDescriptionTitle}>
                 <InfoCircleOutlined />
-                <div className={styles.taskDescriptionTitleText}>Описание:</div>
+                <div className={styles.taskDescriptionTitleText}>
+                    Описание:
+                </div>
             </div>
             <div className={styles.taskDescriptionText}>
                 {description}

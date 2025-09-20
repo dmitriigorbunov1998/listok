@@ -6,7 +6,7 @@ import { Menu } from 'antd';
 import styles from './VerticalMenu.module.css';
 
 export const VerticalMenu = () => {
-    const MENU_ITEMS = [
+    const menuItems = [
         {
             key: 'dashboard',
             icon: <DashboardOutlined />,
@@ -28,7 +28,7 @@ export const VerticalMenu = () => {
         <div className={styles.menuContainer}>
             <Menu
                 defaultSelectedKeys={['dashboard']}
-                items={MENU_ITEMS}
+                items={menuItems}
                 className={styles.menu} />
         </div>
     );
