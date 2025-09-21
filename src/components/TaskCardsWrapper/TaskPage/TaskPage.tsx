@@ -47,9 +47,10 @@ interface TaskPageProps {
     selectedTask: Task;
     projects: Project[];
     users: User[];
+    onClick: () => void;
 }
 
-export const TaskPage = ({ selectedTask, projects, users }: TaskPageProps) => {
+export const TaskPage = ({ selectedTask, projects, users, onClick }: TaskPageProps) => {
     const { title, description, id, creatorId, createdAt, status, projectId, assigneeId } = selectedTask;
     const project = projects.find(project => project.id === projectId);
     const assigneeUser = users.find(user => user.id === assigneeId);
@@ -90,7 +91,7 @@ export const TaskPage = ({ selectedTask, projects, users }: TaskPageProps) => {
                             </Button>
                         </Dropdown>
                     </div>
-                    <div className={styles.taskEdit}><FormOutlined /></div>
+                    <div className={styles.taskEdit} onClick={onClick}><FormOutlined /></div>
                 </div>
             </div>
             <div className={styles.taskStatus}>

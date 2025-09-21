@@ -34,6 +34,9 @@ export const TaskCardsWrapper = () => {
     }, []);
 
     const showModal = useCallback(() => setIsModalVisible(true), []);
+
+    const onEditButtonClick = useCallback(() => setIsModalVisible(true), [setIsModalVisible]);
+
     const onCardClick = useCallback((card: any) => {
         setSelectedTask(card);
     }, []);
@@ -86,7 +89,12 @@ export const TaskCardsWrapper = () => {
                 <div className={styles.taskPage}>
                     {selectedTask ? (
                         selectedTask?.title ? (
-                            <TaskPage selectedTask={selectedTask} projects={projects} users={users} />
+                            <TaskPage
+                                selectedTask={selectedTask}
+                                projects={projects}
+                                users={users}
+                                onClick={(() => onEditButtonClick())}
+                            />
                         ) : (
                             <Empty />
                         )
