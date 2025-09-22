@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './TaskPage.module.css';
 import { Breadcrumb } from 'antd';
 import {
@@ -11,50 +13,70 @@ from '@ant-design/icons';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Project, Task, User } from '@/types';
-import { TaskCardStatus } from '@/components/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
+import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { formatDateTime } from '@/utils/date';
-
-const items: MenuProps['items'] = [
-    {
-        label: 'В статус "В работе"',
-        key: '1',
-    },
-    {
-        label: 'В статус "Отклонено"',
-        key: '2',
-    },
-    {
-        label: 'В статус "Открыто"',
-        key: '3',
-    },
-    {
-        type: 'divider',
-    },
-    {
-        label: 'Удалить',
-        key: '4',
-        danger: true,
-    },
-];
-
-const menuProps = {
-    items,
-};
+import { TaskStatus } from '@/constants/consts';
+import { taskStatusLabel, taskStatusTransitions } from '@/utils/taskStatusTransitions';
+import { useEditTask } from '@/hooks/useEditTask';
 
 interface TaskPageProps {
     selectedTask: Task;
     projects: Project[];
     users: User[];
+    getTasks: () => void;
     onClick: () => void;
 }
 
-export const TaskPage = ({ selectedTask, projects, users, onClick }: TaskPageProps) => {
+export const TaskPage = ({ selectedTask, projects, users, getTasks, onClick }: TaskPageProps) => {
     const { title, description, id, creatorId, createdAt, status, projectId, assigneeId } = selectedTask;
     const project = projects.find(project => project.id === projectId);
     const assigneeUser = users.find(user => user.id === assigneeId);
     const creatorUser = users.find(user => user.id === creatorId);
+    const { editTask } = useEditTask();
+
+    const handleStatusChange = useCallback(async (newStatus: TaskStatus) => {
+        const success = await editTask({
+            id,
+            status: newStatus
+        });
+
+        if (success) {
+            getTasks();
+        }
+    }, [getTasks]);
+
+    const availableTransitions = useCallback((currentStatus: TaskStatus) => {
+        return taskStatusTransitions[currentStatus].reduce((acc, status, index) => {
+            acc.push({
+                key: index + 1,
+                label: (
+                    <div onClick={() => handleStatusChange(status)}>
+                        {taskStatusLabel[status]}
+                    </div>
+                ),
+            });
+
+            return acc;
+        }, [] as { key: number, label: React.JSX.Element }[])
+    }, []);
+
+    const items: MenuProps['items'] = [
+        ...availableTransitions(status),
+        {
+            type: 'divider',
+        },
+        {
+            label: 'Удалить',
+            key: taskStatusTransitions[status].length + 1,
+            danger: true,
+        },
+    ];
+
+    const menuProps = {
+        items,
+    };
 
     return (
         <div className={styles.wrapper}>

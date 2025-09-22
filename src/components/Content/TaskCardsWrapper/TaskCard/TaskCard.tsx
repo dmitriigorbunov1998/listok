@@ -1,5 +1,5 @@
 import styles from './TaskCard.module.css';
-import { TaskCardStatus } from '@/components/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
+import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { Avatar } from 'antd';
 import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import React from 'react';

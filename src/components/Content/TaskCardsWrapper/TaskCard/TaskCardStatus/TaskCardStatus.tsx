@@ -1,27 +1,29 @@
 import { Tag } from 'antd';
 import { CheckCircleOutlined, ClockCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import { useMemo } from 'react';
+import { taskStatusLabel } from '@/utils/taskStatusTransitions';
+import { TaskStatus } from '@/constants/consts';
 
 interface TaskCardStatusProps {
-    status: string;
+    status: TaskStatus;
 }
 
 export const TaskCardStatus = ({ status }: TaskCardStatusProps) => {
     const properties = useMemo(() => {
         switch (status) {
-            case "done":
+            case TaskStatus.Done:
                 return {
                     color: "success" as const,
                     text: "Выполнено",
                     icon: <CheckCircleOutlined />,
                 };
-            case "inProgress":
+            case TaskStatus.InProgress:
                 return {
                     color: "processing" as const,
                     text: "В работе",
                     icon: <SyncOutlined />,
                 };
-            case "review":
+            case TaskStatus.Review:
                 return {
                     color: "warning" as const,
                     text: "Ревью",
@@ -30,7 +32,7 @@ export const TaskCardStatus = ({ status }: TaskCardStatusProps) => {
             default:
                 return {
                     color: "default" as const,
-                    text: "Создано",
+                    text: taskStatusLabel[status],
                     icon: <ClockCircleOutlined />,
                 };
         }
