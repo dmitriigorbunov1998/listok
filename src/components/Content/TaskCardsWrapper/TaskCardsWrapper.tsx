@@ -16,12 +16,14 @@ interface TaskCardsWrapperProps {
     onTaskSelect: (taskId: string) => void;
 }
 
-export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapperProps) => {
+export const TaskCardsWrapper = ({
+     initialTaskId,
+     onTaskSelect
+}: TaskCardsWrapperProps) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
-
+    const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
     const hasFetchedRef = useRef(false);
-
     const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
     const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
     const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
@@ -43,14 +45,21 @@ export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapp
         }
     }, []);
 
-    const showModal = useCallback(() => setIsModalVisible(true), []);
+    const showModal = useCallback(() => {
+        setModalMode('create');
+        setIsModalVisible(true);
+    }, [])
+
+    const onEditButtonClick = useCallback(() => {
+        setModalMode('edit');
+        setIsModalVisible(true);
+    }, []);
+
     const onCardClick = useCallback((id: number, projectId: number) => {
         const selectedTaskProject = projects.find((project) => project.id === projectId);
         setSelectedTask(id);
         onTaskSelect(`${selectedTaskProject?.shortName}-${id}`);
     }, [projects]);
-
-    const onEditButtonClick = useCallback(() => setIsModalVisible(true), [setIsModalVisible]);
 
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
@@ -80,7 +89,9 @@ export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapp
             <div className={styles.taskInfo}>
                 <div className={styles.taskWrapper}>
                     <div className={styles.createTaskButton}>
-                        <CreateTaskButton onClick={showModal} />
+                        <CreateTaskButton
+                            onClick={showModal}
+                        />
                     </div>
                     <div className={styles.taskCardsWrapper}>
                         {tasks.map((task) => {
@@ -88,7 +99,10 @@ export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapp
                             const user = users.find(user => user.id === task.assigneeId);
 
                             return (
-                                <div className={styles.taskCards} key={`${task.title}-${task.id}`}>
+                                <div
+                                    className={styles.taskCards}
+                                    key={`${task.title}-${task.id}`}
+                                >
                                     <TaskCard
                                         task={task}
                                         project={project}
@@ -103,14 +117,27 @@ export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapp
                 <div className={styles.taskPage}>
                     {visibleTask ? (
                         visibleTask?.title ? (
-                            <TaskPage getTasks={getTasks} selectedTask={visibleTask} projects={projects} users={users} onClick={onEditButtonClick} />
+                            <TaskPage
+                                getTasks={getTasks}
+                                selectedTask={visibleTask}
+                                projects={projects}
+                                users={users}
+                                onClick={onEditButtonClick} />
                         ) : (
                             <Empty />
                         )
                     ) : null}
                 </div>
             </div>
-            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
+            <TaskModalWindow
+                isOpen={isModalVisible}
+                onClose={handleClose}
+                onSuccess={handleCreateTask}
+                users={users}
+                projects={projects}
+                mode={modalMode}
+                task={modalMode === 'edit' ? visibleTask : null}
+            />
         </div>
     );
 };
