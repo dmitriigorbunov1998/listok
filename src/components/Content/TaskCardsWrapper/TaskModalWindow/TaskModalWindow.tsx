@@ -67,21 +67,23 @@ export const TaskModalWindow = ({
                     </Button>,
             ]}
         >
-            <Form form={form} layout="vertical">
+            <Form
+                form={form}
+                layout="vertical"
+                initialValues={{
+                    description: description,
+                    title: taskTitle,
+                }}
+            >
                 <Form.Item
                     name="title"
                     label="Название задачи"
-                    rules={
-                        [
-                            { 
-                                required: true,
-                                message: 'Введите название задачи',
-                            }
-                        ]
-                    }>
+                >
+
                     <Input
                         placeholder="Введите название задачи"   
                     />
+
                 </Form.Item>
 
                 <Form.Item
@@ -96,6 +98,7 @@ export const TaskModalWindow = ({
                         ]
                     }
                 >
+
                     <Select
                         placeholder="Выберите проект"
                     >
@@ -110,16 +113,19 @@ export const TaskModalWindow = ({
                             ))
                         }
                     </Select>
+
                 </Form.Item>
 
                 <Form.Item
                     name="description"
                     label="Описание"
                 >
+
                     <Input.TextArea
                         placeholder="Опишите задачу"
                         rows={4}
                     />
+
                 </Form.Item>
 
                 <Form.Item
@@ -134,6 +140,7 @@ export const TaskModalWindow = ({
                         ]
                     }
                 >
+
                     <Select
                         placeholder="Выберите исполнителя"
                     >
@@ -148,6 +155,7 @@ export const TaskModalWindow = ({
                             ))
                         }
                     </Select>
+
                 </Form.Item>
             </Form>
         </Modal>

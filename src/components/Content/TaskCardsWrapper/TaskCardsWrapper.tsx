@@ -9,7 +9,6 @@ import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
 import { TaskPage } from '@/components/Content/TaskCardsWrapper/TaskPage/TaskPage';
-import { Task } from '@/types';
 import { Empty } from 'antd';
 
 interface TaskCardsWrapperProps {
@@ -23,8 +22,9 @@ export const TaskCardsWrapper = ({
 }: TaskCardsWrapperProps) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
-    const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+
     const hasFetchedRef = useRef(false);
+
     const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
     const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
     const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
@@ -46,15 +46,7 @@ export const TaskCardsWrapper = ({
         }
     }, []);
 
-    const showModal = useCallback(() => {
-        setModalMode('create');
-        setIsModalVisible(true);
-    }, [])
-
-    const onEditButtonClick = useCallback(() => {
-        setModalMode('edit');
-        setIsModalVisible(true);
-    }, []);
+    const showModal = useCallback(() => setIsModalVisible(true), []);
 
     const onCardClick = useCallback((id: number, projectId: number) => {
         const selectedTaskProject = projects.find((project) => project.id === projectId);
@@ -89,11 +81,13 @@ export const TaskCardsWrapper = ({
         <div className={styles.taskContent}>
             <div className={styles.taskInfo}>
                 <div className={styles.taskWrapper}>
+
                     <div className={styles.createTaskButton}>
                         <CreateTaskButton
                             onClick={showModal}
                         />
                     </div>
+
                     <div className={styles.taskCardsWrapper}>
                         {tasks.map((task) => {
                             const project = projects.find(project => project.id === task.projectId);
@@ -114,7 +108,9 @@ export const TaskCardsWrapper = ({
                             );
                         })}
                     </div>
+
                 </div>
+
                 <div className={styles.taskPage}>
                     {visibleTask ? (
                         visibleTask?.title ? (
@@ -123,14 +119,23 @@ export const TaskCardsWrapper = ({
                                 selectedTask={visibleTask}
                                 projects={projects}
                                 users={users}
-                                onClick={onEditButtonClick} />
+                            />
                         ) : (
                             <Empty />
                         )
                     ) : null}
                 </div>
             </div>
-            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} type='create' />
+
+            <TaskModalWindow
+                isVisible={isModalVisible}
+                onClose={handleClose}
+                onCreate={handleCreateTask}
+                users={users}
+                projects={projects}
+                type='create'
+            />
+
         </div>
     );
 };
