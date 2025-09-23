@@ -1,6 +1,7 @@
 'use client';
 
 import styles from './TaskPage.module.css';
+import { useCallback, useState } from 'react';
 import { Breadcrumb } from 'antd';
 import {
     ClockCircleOutlined,
@@ -13,13 +14,38 @@ from '@ant-design/icons';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Project, Task, User } from '@/types';
 import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { formatDateTime } from '@/utils/date';
-import { TaskStatus } from '@/constants/consts';
-import { taskStatusLabel, taskStatusTransitions } from '@/utils/taskStatusTransitions';
-import { useEditTask } from '@/hooks/useEditTask';
+import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
+
+const items: MenuProps['items'] = [
+    {
+        label: 'В статус "В работе"',
+        key: '1',
+    },
+    {
+        label: 'В статус "Отклонено"',
+        key: '2',
+    },
+    {
+        label: 'В статус "Открыто"',
+        key: '3',
+    },
+    {
+        type: 'divider',
+    },
+    {
+        label: 'Удалить',
+        key: '4',
+        danger: true,
+    },
+];
+
+const menuProps = {
+    items,
+};
 
 interface TaskPageProps {
     selectedTask: Task;
@@ -34,49 +60,19 @@ export const TaskPage = ({ selectedTask, projects, users, getTasks, onClick }: T
     const project = projects.find(project => project.id === projectId);
     const assigneeUser = users.find(user => user.id === assigneeId);
     const creatorUser = users.find(user => user.id === creatorId);
-    const { editTask } = useEditTask();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const handleStatusChange = useCallback(async (newStatus: TaskStatus) => {
-        const success = await editTask({
-            id,
-            status: newStatus
-        });
+    const handleClick = useCallback (() => {
+        setIsOpen(true);
+    }, [])
 
-        if (success) {
-            getTasks();
-        }
-    }, [getTasks]);
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+    }, [])
 
-    const availableTransitions = useCallback((currentStatus: TaskStatus) => {
-        return taskStatusTransitions[currentStatus].reduce((acc, status, index) => {
-            acc.push({
-                key: index + 1,
-                label: (
-                    <div onClick={() => handleStatusChange(status)}>
-                        {taskStatusLabel[status]}
-                    </div>
-                ),
-            });
-
-            return acc;
-        }, [] as { key: number, label: React.JSX.Element }[])
-    }, []);
-
-    const items: MenuProps['items'] = [
-        ...availableTransitions(status),
-        {
-            type: 'divider',
-        },
-        {
-            label: 'Удалить',
-            key: taskStatusTransitions[status].length + 1,
-            danger: true,
-        },
-    ];
-
-    const menuProps = {
-        items,
-    };
+    const handleSave = useCallback(() => {
+        console.log('Задача изменена')
+    }, [])
 
     return (
         <div className={styles.wrapper}>
@@ -113,7 +109,10 @@ export const TaskPage = ({ selectedTask, projects, users, getTasks, onClick }: T
                             </Button>
                         </Dropdown>
                     </div>
-                    <div className={styles.taskEdit} onClick={onClick}><FormOutlined /></div>
+                    <div className={styles.taskEdit} onClick={handleClick}>
+                        <FormOutlined />
+                        </div>
+                    
                 </div>
             </div>
             <div className={styles.taskStatus}>
@@ -144,6 +143,9 @@ export const TaskPage = ({ selectedTask, projects, users, getTasks, onClick }: T
             </div>
             <div className={styles.taskDescriptionText}>
                 {description}
+            </div>
+            <div>
+                <TaskModalWindow isVisible={isOpen} onClose={handleClose} users={[]} projects={[]} onCreate={handleSave} type='edit' description='' taskTitle='' />
             </div>
         </div>
     )

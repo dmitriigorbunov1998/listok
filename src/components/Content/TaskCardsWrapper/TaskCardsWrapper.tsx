@@ -9,6 +9,7 @@ import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
 import { TaskPage } from '@/components/Content/TaskCardsWrapper/TaskPage/TaskPage';
+import { Task } from '@/types';
 import { Empty } from 'antd';
 
 interface TaskCardsWrapperProps {
@@ -129,15 +130,7 @@ export const TaskCardsWrapper = ({
                     ) : null}
                 </div>
             </div>
-            <TaskModalWindow
-                isOpen={isModalVisible}
-                onClose={handleClose}
-                onSuccess={handleCreateTask}
-                users={users}
-                projects={projects}
-                mode={modalMode}
-                task={modalMode === 'edit' ? visibleTask : null}
-            />
+            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} type='create' />
         </div>
     );
 };
