@@ -55,7 +55,7 @@ export const TaskPage = ({
             });
 
             return acc;
-        }, [])
+        }, [] as { key: number, label: React.JSX.Element }[])
     }, []);
 
 
