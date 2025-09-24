@@ -17,33 +17,8 @@ import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/T
 import { formatDateTime } from '@/utils/date';
 import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
 import { useEditTask } from '@/hooks/useEditTask';
-
-const items: MenuProps['items'] = [
-    {
-        label: 'В статус "В работе"',
-        key: '1',
-    },
-    {
-        label: 'В статус "Отклонено"',
-        key: '2',
-    },
-    {
-        label: 'В статус "Открыто"',
-        key: '3',
-    },
-    {
-        type: 'divider',
-    },
-    {
-        label: 'Удалить',
-        key: '4',
-        danger: true,
-    },
-];
-
-const menuProps = {
-    items,
-};
+import { taskStatusLabel, taskStatusTransitions } from '@/utils/taskStatusTransitions';
+import { TaskStatus } from '@/constants/consts';
 
 interface TaskPageProps {
     selectedTask: Task;
@@ -68,6 +43,49 @@ export const TaskPage = ({
 
     const { editTask } = useEditTask();
 
+    const availableTransitions = useCallback((currentStatus: TaskStatus) => {
+        return taskStatusTransitions[currentStatus].reduce((acc, status, index) => {
+            acc.push({
+                key: index + 1,
+                label: (
+                    <div onClick={() => handleStatusChange(status)}>
+                        {taskStatusLabel[status]}
+                    </div>
+                ),
+            });
+
+            return acc;
+        }, [])
+    }, []);
+
+
+    const items: MenuProps['items'] = [
+        ...availableTransitions(status),
+        {
+            type: 'divider',
+        },
+        {
+            label: 'Удалить',
+            key: taskStatusTransitions[status].length + 1,
+            danger: true,
+        },
+    ];
+
+    const menuProps = {
+        items,
+    };
+
+    const handleStatusChange = useCallback(async (newStatus: TaskStatus) => {
+        const success = await editTask({
+            id,
+            status: newStatus
+        });
+
+        if (success) {
+            getTasks();
+        }
+    }, [getTasks]);
+
     const handleClick = useCallback (() => {
         setIsOpen(true);
     }, [])
@@ -81,6 +99,7 @@ export const TaskPage = ({
             const success = await editTask({id, ...values});
 
             if (success) {
+                getTasks();
                 handleClose();
             }
         } catch (error) {
