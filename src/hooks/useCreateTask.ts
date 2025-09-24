@@ -7,7 +7,6 @@ interface CreateTaskData {
 
 export const useCreateTask = () => {
     const createTask = async (taskData: CreateTaskData): Promise<boolean> => {
-
         try {
             const response = await fetch('/api/createTask', {
                 method: 'POST',
