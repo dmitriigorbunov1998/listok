@@ -1,18 +1,19 @@
-'use client';
-
 import { Modal, Form, Input, Select, Button } from 'antd';
 import { Project, User } from '@/types';
 import { useCreateTask } from '@/hooks/useCreateTask';
+import { useEditTask } from '@/hooks/useEditTask';
 
 interface TaskModalWindowProps {
     isVisible: boolean;
     onClose: () => void;
     users: User[];
     projects: Project[];
-    onCreate: () => void;
-    type: String;
-    description?: String;
-    taskTitle?: String;
+    onSubmit: (values: any) => Promise<void>;
+    type: string;
+    description?: string;
+    taskTitle?: string;
+    assigneeId?: number;
+    projectId?: number;
 }
 
 export const TaskModalWindow = ({
@@ -20,26 +21,24 @@ export const TaskModalWindow = ({
     onClose,
     users,
     projects,
-    onCreate,
+    onSubmit,
     type,
     description,
-    taskTitle
+    taskTitle,
+    assigneeId,
+    projectId,
 }: TaskModalWindowProps) => {
     const [form] = Form.useForm();
-    const { createTask } = useCreateTask();
 
-    const title = type === 'create' ? 'Создание новой задачи' : 'Редактирование текущей задачи';
+    const title = type === 'create' ? 'Создание задачи' : 'Редактирование задачи';
 
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
-            const success = await createTask(values);
 
-            if (success) {
-                form.resetFields();
-                onCreate();
-                onClose();
-            }
+            onSubmit(values);
+            form.resetFields();
+            onClose();
         } catch (validationError) {
             console.error('Validation error:', validationError);
         }
@@ -63,7 +62,7 @@ export const TaskModalWindow = ({
                         type="primary"
                         onClick={handleSubmit}
                     >
-                        Создать
+                        {type === 'edit' ? 'Сохранить' : 'Создать'}
                     </Button>,
             ]}
         >
@@ -73,6 +72,8 @@ export const TaskModalWindow = ({
                 initialValues={{
                     description: description,
                     title: taskTitle,
+                    assigneeId: assigneeId,
+                    projectId: projectId,
                 }}
             >
                 <Form.Item

@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './CreateTaskButton.module.css';

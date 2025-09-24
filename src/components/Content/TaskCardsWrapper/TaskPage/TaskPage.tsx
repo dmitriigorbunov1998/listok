@@ -1,5 +1,3 @@
-'use client';
-
 import styles from './TaskPage.module.css';
 import { useCallback, useState } from 'react';
 import { Breadcrumb } from 'antd';
@@ -18,6 +16,7 @@ import { Project, Task, User } from '@/types';
 import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { formatDateTime } from '@/utils/date';
 import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
+import { useEditTask } from '@/hooks/useEditTask';
 
 const items: MenuProps['items'] = [
     {
@@ -67,6 +66,8 @@ export const TaskPage = ({
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
+    const { editTask } = useEditTask();
+
     const handleClick = useCallback (() => {
         setIsOpen(true);
     }, [])
@@ -75,9 +76,17 @@ export const TaskPage = ({
         setIsOpen(false);
     }, [])
 
-    const handleSave = useCallback(() => {
-        console.log('Задача изменена')
-    }, [])
+    const handleEditTask = useCallback(async (values: any) => {
+        try {
+            const success = await editTask({id, ...values});
+
+            if (success) {
+                handleClose();
+            }
+        } catch (error) {
+            console.error('Ошибка при редактировании задачи:', error);
+        }
+    }, [handleClose])
 
     return (
         <div className={styles.wrapper}>
@@ -191,12 +200,14 @@ export const TaskPage = ({
                 <TaskModalWindow
                     isVisible={isOpen}
                     onClose={handleClose}
-                    users={[]}
-                    projects={[]}
-                    onCreate={handleSave}
+                    users={users}
+                    projects={projects}
+                    onSubmit={handleEditTask}
                     type='edit'
                     description={description}
                     taskTitle={title}
+                    assigneeId={assigneeId}
+                    projectId={projectId}
                 />
             </div>
         </div>
