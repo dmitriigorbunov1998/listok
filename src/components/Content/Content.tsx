@@ -1,7 +1,7 @@
 "use client"
 
-import { VerticalMenu } from '@/components/VerticalMenu/VerticalMenu';
-import { TaskCardsWrapper } from '@/components/TaskCardsWrapper/TaskCardsWrapper';
+import { VerticalMenu } from '@/components/Content/VerticalMenu/VerticalMenu';
+import { TaskCardsWrapper } from '@/components/Content/TaskCardsWrapper/TaskCardsWrapper';
 import styles from './Content.module.css';
 import { useRouter } from 'next/navigation';
 

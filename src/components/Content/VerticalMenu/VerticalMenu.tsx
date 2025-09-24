@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { SettingOutlined, UserOutlined, DashboardOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';

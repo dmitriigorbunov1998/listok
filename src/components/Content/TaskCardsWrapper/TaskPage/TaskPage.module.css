@@ -42,6 +42,7 @@
 .taskEdit {
     margin-left: 16px;
     color: rgba(42, 114, 248, 1);
+    cursor: pointer;
 }
 
 /* Статус задачи */
@@ -110,4 +111,5 @@
 .taskDescriptionText {
     margin-top: 8px;
     color: rgba(0, 0, 0, 0.75);
+    white-space: pre-wrap;
 }

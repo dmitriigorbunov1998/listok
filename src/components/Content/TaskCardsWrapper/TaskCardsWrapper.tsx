@@ -1,22 +1,24 @@
-'use client';
-
 import styles from './TaskCardsWrapper.module.css';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { CreateTaskButton } from '@/components/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
-import { TaskModalWindow } from '@/components/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
-import { TaskCard } from '@/components/TaskCardsWrapper/TaskCard/TaskCard';
+import { CreateTaskButton } from '@/components/Content/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
+import { TaskModalWindow } from '@/components/Content/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
+import { TaskCard } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCard';
 import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
-import { TaskPage } from '@/components/TaskCardsWrapper/TaskPage/TaskPage';
+import { TaskPage } from '@/components/Content/TaskCardsWrapper/TaskPage/TaskPage';
 import { Empty } from 'antd';
+import { useCreateTask } from '@/hooks/useCreateTask';
 
 interface TaskCardsWrapperProps {
     initialTaskId?: string;
     onTaskSelect: (taskId: string) => void;
 }
 
-export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapperProps) => {
+export const TaskCardsWrapper = ({
+     initialTaskId,
+     onTaskSelect
+}: TaskCardsWrapperProps) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
 
@@ -25,6 +27,7 @@ export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapp
     const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
     const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
     const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
+    const { createTask } = useCreateTask();
 
     useEffect(() => {
         if (hasFetchedRef.current) {
@@ -44,48 +47,50 @@ export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapp
     }, []);
 
     const showModal = useCallback(() => setIsModalVisible(true), []);
+
     const onCardClick = useCallback((id: number, projectId: number) => {
         const selectedTaskProject = projects.find((project) => project.id === projectId);
         setSelectedTask(id);
         onTaskSelect(`${selectedTaskProject?.shortName}-${id}`);
     }, [projects]);
+
     const handleClose = useCallback(() => setIsModalVisible(false), []);
 
-    const handleCreateTask = useCallback(async () => {
+    const handleCreateTask = useCallback(async (values: any) => {
         try {
-            handleClose();
+            const success = await createTask(values);
+
+            if (success) {
+                handleClose();
+            }
         } catch (error) {
             console.error('Ошибка при создании задачи:', error);
         }
     }, [handleClose]);
 
-    const isLoading = projectsLoading || tasksLoading || usersLoading;
-    const hasError = projectsError || tasksError || usersError;
-
     const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask, tasksLoading]);
-
-    if (isLoading) {
-        return <div className={styles.loading}>Загрузка...</div>;
-    }
-
-    if (hasError) {
-        return <div className={styles.error}>Ошибка загрузки</div>;
-    }
 
     return (
         <div className={styles.taskContent}>
             <div className={styles.taskInfo}>
                 <div className={styles.taskWrapper}>
+
                     <div className={styles.createTaskButton}>
-                        <CreateTaskButton onClick={showModal} />
+                        <CreateTaskButton
+                            onClick={showModal}
+                        />
                     </div>
+
                     <div className={styles.taskCardsWrapper}>
                         {tasks.map((task) => {
                             const project = projects.find(project => project.id === task.projectId);
                             const user = users.find(user => user.id === task.assigneeId);
 
                             return (
-                                <div className={styles.taskCards} key={`${task.title}-${task.id}`}>
+                                <div
+                                    className={styles.taskCards}
+                                    key={`${task.title}-${task.id}`}
+                                >
                                     <TaskCard
                                         task={task}
                                         project={project}
@@ -96,18 +101,34 @@ export const TaskCardsWrapper = ({ initialTaskId, onTaskSelect }: TaskCardsWrapp
                             );
                         })}
                     </div>
+
                 </div>
+
                 <div className={styles.taskPage}>
                     {visibleTask ? (
                         visibleTask?.title ? (
-                            <TaskPage getTasks={getTasks} selectedTask={visibleTask} projects={projects} users={users} />
+                            <TaskPage
+                                getTasks={getTasks}
+                                selectedTask={visibleTask}
+                                projects={projects}
+                                users={users}
+                            />
                         ) : (
                             <Empty />
                         )
                     ) : null}
                 </div>
             </div>
-            <TaskModalWindow isVisible={isModalVisible} onClose={handleClose} onCreate={handleCreateTask} users={users} projects={projects} />
+
+            <TaskModalWindow
+                isVisible={isModalVisible}
+                onClose={handleClose}
+                onSubmit={handleCreateTask}
+                users={users}
+                projects={projects}
+                type='create'
+            />
+
         </div>
     );
 };
