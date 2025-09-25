@@ -5,8 +5,12 @@ interface DeleteTaskData {
 export const useDeleteTask = () => {
     const deleteTask = async (taskData: DeleteTaskData): Promise<boolean> => {
         try {
-            const response = await fetch(`/api/deleteTask?id=${taskData.id}`, {
+            const response = await fetch('/api/deleteTask', {
                 method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(taskData),
             });
 
             if (!response.ok) {
