@@ -105,18 +105,20 @@ export const TaskCardsWrapper = ({
                 </div>
 
                 <div className={styles.taskPage}>
-                    {visibleTask ? (
-                        visibleTask?.title ? (
+                    {
+                        visibleTask?.title ?
+                            <div className={styles.taskPageInfo}>
                             <TaskPage
                                 getTasks={getTasks}
                                 selectedTask={visibleTask}
                                 projects={projects}
                                 users={users}
                             />
-                        ) : (
-                            <Empty />
-                        )
-                    ) : null}
+                            </div>    :
+                            <div className={styles.taskPageNoData}>
+                                <Empty />
+                            </div>
+                        }
                 </div>
             </div>
 
