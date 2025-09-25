@@ -17,6 +17,7 @@ import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/T
 import { formatDateTime } from '@/utils/date';
 import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
 import { useEditTask } from '@/hooks/useEditTask';
+import { useDeleteTask } from '@/hooks/useDeleteTask';
 import { taskStatusLabel, taskStatusTransitions } from '@/utils/taskStatusTransitions';
 import { TaskStatus } from '@/constants/consts';
 
@@ -28,10 +29,10 @@ interface TaskPageProps {
 }
 
 export const TaskPage = ({
-     selectedTask,
-     projects,
-     users,
-     getTasks
+    selectedTask,
+    projects,
+    users,
+    getTasks,
 }: TaskPageProps) => {
     const { title, description, id, creatorId, createdAt, status, projectId, assigneeId } = selectedTask;
 
@@ -42,6 +43,7 @@ export const TaskPage = ({
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const { editTask } = useEditTask();
+    const { deleteTask } = useDeleteTask();
 
     const availableTransitions = useCallback((currentStatus: TaskStatus) => {
         return taskStatusTransitions[currentStatus].reduce((acc, status, index) => {
@@ -57,7 +59,6 @@ export const TaskPage = ({
             return acc;
         }, [] as { key: number, label: React.JSX.Element }[])
     }, []);
-
 
     const items: MenuProps['items'] = [
         ...availableTransitions(status),
@@ -107,6 +108,19 @@ export const TaskPage = ({
         }
     }, [handleClose])
 
+    const handleDeleteTask = useCallback(async () => {
+        try {
+            const success = await deleteTask({ id });
+
+            if (success) {
+                getTasks();
+                handleClose();
+            }
+        } catch (error) {
+            console.error('Ошибка при удалении задачи:', error);
+        }
+    }, [deleteTask, getTasks, handleClose]);
+
     return (
         <div className={styles.wrapper}>
             <Breadcrumb
@@ -140,7 +154,14 @@ export const TaskPage = ({
                 <div className={styles.taskDropDown}>
                     <div className={styles.taskDropDownMenu}>
                         <Dropdown
-                            menu={menuProps}
+                            menu={{
+                                items,
+                                onClick: ({ key }) => {
+                                    if (key === 'delete') {
+                                        handleDeleteTask();
+                                    }
+                                }
+                            }}
                             className={styles.taskDropDownMenu}>
 
                             <Button>
