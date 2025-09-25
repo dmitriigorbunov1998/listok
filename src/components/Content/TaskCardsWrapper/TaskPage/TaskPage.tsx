@@ -66,15 +66,15 @@ export const TaskPage = ({
             type: 'divider',
         },
         {
-            label: 'Удалить',
+            label: (
+                <div onClick={() => handleDeleteTask()}>
+                    Удалить
+                </div>
+            ),
             key: taskStatusTransitions[status].length + 1,
             danger: true,
         },
     ];
-
-    const menuProps = {
-        items,
-    };
 
     const handleStatusChange = useCallback(async (newStatus: TaskStatus) => {
         const success = await editTask({
@@ -119,7 +119,7 @@ export const TaskPage = ({
         } catch (error) {
             console.error('Ошибка при удалении задачи:', error);
         }
-    }, [deleteTask, getTasks, handleClose]);
+    }, [deleteTask, getTasks, handleClose, id]);
 
     return (
         <div className={styles.wrapper}>
@@ -154,14 +154,7 @@ export const TaskPage = ({
                 <div className={styles.taskDropDown}>
                     <div className={styles.taskDropDownMenu}>
                         <Dropdown
-                            menu={{
-                                items,
-                                onClick: ({ key }) => {
-                                    if (key === 'delete') {
-                                        handleDeleteTask();
-                                    }
-                                }
-                            }}
+                            menu={{ items }}
                             className={styles.taskDropDownMenu}>
 
                             <Button>
