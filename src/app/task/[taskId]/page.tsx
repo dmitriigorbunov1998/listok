@@ -1,7 +1,7 @@
-import { Content } from '@/components/Content/Content';
+import { TasksScreen } from '@/components/TasksScreen/TasksScreen';
 
 export default async function TaskPage({ params }: { params: Promise<{ taskId: string }> }) {
     const { taskId } = await params;
 
-    return <Content initialTaskId={taskId} />;
+    return <TasksScreen initialTaskId={taskId} />;
 }

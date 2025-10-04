@@ -13,7 +13,7 @@ import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
 import React from 'react';
 import { Project, Task, User } from '@/types';
-import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
+import { TaskCardStatus } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { formatDateTime } from '@/utils/date';
 import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
 import { useEditTask } from '@/hooks/useEditTask';

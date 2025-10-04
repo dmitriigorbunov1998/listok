@@ -1,6 +1,5 @@
-import { Content } from '@/components/Content/Content';
-import './index.css';
+import { TasksScreen } from '@/components/TasksScreen/TasksScreen';
 
 export default function Home() {
-    return <Content />;
+    return <TasksScreen />;
 }
