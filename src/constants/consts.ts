@@ -10,5 +10,5 @@ export enum TaskStatus {
 
 export enum ProjectStatus {
     AccessReceived = 'access_received',
-    ApplicationSent = 'application_sent',
+    InviteSent = 'invite_sent',
 }

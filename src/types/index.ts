@@ -15,12 +15,12 @@ export interface Project {
     name: string;
     shortName: string;
     description: string;
-    owner_id?: number;
+    createdAt: string;
+    status: ProjectStatus;
     githubUrl?: string;
     collaboratorsId?: number[];
     imageUrl?: string;
-    createdAt: string;
-    status: ProjectStatus;
+    ownerId?: number;
 }
 
 export interface Task {

@@ -4,22 +4,27 @@ import { VerticalMenu } from '@/components/TasksScreen/VerticalMenu/VerticalMenu
 import './ProjectsScreen.css';
 import { Button } from 'antd';
 import { FolderAddOutlined, GithubOutlined, MoreOutlined, UserOutlined} from '@ant-design/icons';
-import { Project, User } from '@/types'
 import { formatDateTime } from '@/utils/date';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import { ProjectCardStatus } from '@/components/ProjectsScreen/ProjectCardStatus/ProjectCardStatus';
+import { useProjects } from '@/hooks/useProjects';
+import { useUsers } from '@/hooks/useUsers';
+import { useEffect } from 'react';
 
-export interface ProjectsScreenProps {
-    projects: Project[];
-    users: User[];
-}
+export const ProjectsScreen = () => {
+    const { projects, getProjects } = useProjects();
+    const { users, getUsers } = useUsers();
 
-export const ProjectsScreen = (
-    {
-        projects,
-        users,
-    }: ProjectsScreenProps) => {
+    useEffect(() => {
+        getProjects();
+        getUsers();
+    }, [getProjects, getUsers])
+
+    const projectActions = [
+        'Создавать новые проекты,',
+        'Присоединиться к существующим проектам, используя ссылку-приглашение.'
+    ];
 
     const items: MenuProps['items'] = [
         {
@@ -48,7 +53,6 @@ export const ProjectsScreen = (
         <div className='projectsScreenContainer'>
             <VerticalMenu />
             <div className='projectsContainer'>
-
                 <div className='projectsTitleRow'>
                     <h2 className='projectsTitle'>Мои проекты</h2>
                     <Button type="primary" icon={<FolderAddOutlined />} >
@@ -57,20 +61,17 @@ export const ProjectsScreen = (
                 </div>
                 <div className='projectsDescription'>
                     <ul>Здесь представлены проекты, к которым у вас есть доступ. Вы можете:
-                        <li>Создавать новые проекты,</li>
-                        <li>Присоединиться к существующим проектам, используя ссылку-приглашение.</li>
+                        {projectActions.map((action, index) => (
+                            <li key={index}>{action}</li>
+                        ))}
                     </ul>
                 </div>
-
                 <div className='projectsItems'>
                     {projects.map((project) => {
                         return (
                             <div key={project.id} className='projectItem'>
                                 <div className='projectContainer'>
-
                                     <div className='projectElements'>
-
-                                        {/* Логотип проекта */}
                                         <div className='projectLogoRow'>
                                             <div className='projectLogo'>
                                                 <img
@@ -84,13 +85,9 @@ export const ProjectsScreen = (
                                                 </Dropdown>
                                             </div>
                                         </div>
-
-                                        {/* Название проекта */}
                                         <div className='projectTitle'>
                                             {project.name} {`(${project.shortName})`}
                                         </div>
-
-                                        {/* Участники проекта */}
                                         <div className='projectCollaboratorsContainer'>
                                             <div className='projectUserOutlined'>
                                                 <UserOutlined />
@@ -107,8 +104,6 @@ export const ProjectsScreen = (
                                                 })}
                                             </div>
                                         </div>
-
-                                        {/* Ссылка на GitHub */}
                                         <div className='projectLinkRow'>
                                             <div className='projectGithubOutlined'>
                                                 <GithubOutlined />
@@ -121,8 +116,6 @@ export const ProjectsScreen = (
                                                 {project.githubUrl}
                                             </a>
                                         </div>
-
-                                        {/* Дата и статус */}
                                         <div className='projectStatusRow'>
                                             <div className='projectDate'>
                                                 {formatDateTime(project.createdAt)}
@@ -131,18 +124,13 @@ export const ProjectsScreen = (
                                                 <ProjectCardStatus status={project.status} />
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         )
                     })}
-
                 </div>
-
             </div>
-
         </div>
     )
 };

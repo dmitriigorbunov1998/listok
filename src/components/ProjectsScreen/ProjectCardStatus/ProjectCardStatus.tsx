@@ -14,7 +14,7 @@ export const ProjectCardStatus = ({ status }: ProjectCardStatusProps) => {
                     background: '#00CB14',
                     text: "Доступ получен",
                 };
-            case ProjectStatus.ApplicationSent:
+            case ProjectStatus.InviteSent:
                 return {
                     background: '#FFC518',
                     text: "Заявка отправлена",
