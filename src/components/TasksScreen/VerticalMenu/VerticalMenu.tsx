@@ -33,6 +33,11 @@ export const VerticalMenu = () => {
             label: 'Мои задачи',
         },
         {
+            key: 'projects',
+            icon: <ProjectOutlined />,
+            label: 'Мои проекты',
+        },
+        {
             key: 'profile',
             icon: <UserOutlined />,
             label: 'Профиль',
@@ -41,11 +46,6 @@ export const VerticalMenu = () => {
             key: 'settings',
             icon: <SettingOutlined />,
             label: 'Настройки',
-        },
-        {
-            key: 'projects',
-            icon: <ProjectOutlined />,
-            label: 'Мои проекты',
         },
     ];
 
