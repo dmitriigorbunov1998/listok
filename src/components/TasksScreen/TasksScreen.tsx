@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { VerticalMenu } from '@/components/Content/VerticalMenu/VerticalMenu';
-import { TaskCardsWrapper } from '@/components/Content/TaskCardsWrapper/TaskCardsWrapper';
-import styles from './Content.module.css';
+import { VerticalMenu } from '@/components/TasksScreen/VerticalMenu/VerticalMenu';
+import { TaskCardsWrapper } from '@/components/TasksScreen/TaskCardsWrapper/TaskCardsWrapper';
+import styles from './TasksScreen.module.css';
 import { useRouter } from 'next/navigation';
 
 interface ContentProps {
     initialTaskId?: string;
 }
 
-export const Content = ({ initialTaskId }: ContentProps ) => {
+export const TasksScreen = ({ initialTaskId }: ContentProps ) => {
     const router = useRouter();
 
     return (

@@ -1,12 +1,12 @@
 import styles from './TaskCardsWrapper.module.css';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { CreateTaskButton } from '@/components/Content/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
-import { TaskModalWindow } from '@/components/Content/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
-import { TaskCard } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCard';
+import { CreateTaskButton } from '@/components/TasksScreen/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
+import { TaskModalWindow } from '@/components/TasksScreen/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
+import { TaskCard } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCard';
 import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
-import { TaskPage } from '@/components/Content/TaskCardsWrapper/TaskPage/TaskPage';
+import { TaskPage } from '@/components/TasksScreen/TaskCardsWrapper/TaskPage/TaskPage';
 import { Empty } from 'antd';
 import { useCreateTask } from '@/hooks/useCreateTask';
 
