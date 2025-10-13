@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 interface DeleteTaskData {
     id: number,
 }
@@ -18,9 +20,11 @@ export const useDeleteTask = () => {
             }
 
             await response.json();
+            toast.success('Задача удалена');
 
             return true;
         } catch (error) {
+            toast.error('Не удалось удалить задачу');
             console.error('Ошибка при удалении задачи:', error);
             return false;
         }
