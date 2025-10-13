@@ -1,7 +1,5 @@
 import { Modal, Form, Input, Select, Button } from 'antd';
 import { Project, User } from '@/types';
-import { useCreateTask } from '@/hooks/useCreateTask';
-import { useEditTask } from '@/hooks/useEditTask';
 
 interface TaskModalWindowProps {
     isVisible: boolean;

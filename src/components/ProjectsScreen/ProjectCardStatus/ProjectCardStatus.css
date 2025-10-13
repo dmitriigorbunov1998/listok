@@ -1,0 +1,22 @@
+.projectCardStatus {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+}
+
+.projectStatusIcon {
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+}
+
+.projectStatusText {
+    font-family: 'SF Pro Display', sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 10px;
+    line-height: 18px;
+    vertical-align: middle;
+}

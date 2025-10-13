@@ -1,19 +1,20 @@
 import styles from './TaskPage.module.css';
 import { useCallback, useState } from 'react';
 import { Breadcrumb } from 'antd';
-import { ClockCircleOutlined,
+import {
+    ClockCircleOutlined,
     FormOutlined,
     HomeOutlined,
     InfoCircleOutlined,
-    SyncOutlined
-}
-from '@ant-design/icons';
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
+    SyncOutlined,
+    DownOutlined,
+    UserOutlined
+} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, Space } from 'antd';
+import { Button, Dropdown, Space, message } from 'antd';
 import React from 'react';
 import { Project, Task, User } from '@/types';
-import { TaskCardStatus } from '@/components/Content/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
+import { TaskCardStatus } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { formatDateTime } from '@/utils/date';
 import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
 import { useEditTask } from '@/hooks/useEditTask';
@@ -35,15 +36,56 @@ export const TaskPage = ({
     getTasks,
 }: TaskPageProps) => {
     const { title, description, id, creatorId, createdAt, status, projectId, assigneeId } = selectedTask;
-
     const project = projects.find(project => project.id === projectId);
     const assigneeUser = users.find(user => user.id === assigneeId);
     const creatorUser = users.find(user => user.id === creatorId);
-
     const [isOpen, setIsOpen] = useState<boolean>(false);
-
     const { editTask } = useEditTask();
     const { deleteTask } = useDeleteTask();
+
+    const handleDeleteTask = useCallback(async () => {
+        try {
+            const success = await deleteTask({ id });
+            if (success) {
+                getTasks();
+                message.success('Задача успешно удалена');
+            }
+        } catch (error) {
+            console.error('Ошибка при удалении задачи:', error);
+            message.error('Ошибка при удалении задачи');
+        }
+    }, [deleteTask, getTasks, id]);
+
+    const handleStatusChange = useCallback(async (newStatus: TaskStatus) => {
+        const success = await editTask({
+            id,
+            status: newStatus
+        });
+
+        if (success) {
+            getTasks();
+        }
+    }, [editTask, id, getTasks]);
+
+    const handleClick = useCallback(() => {
+        setIsOpen(true);
+    }, []);
+
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+    }, []);
+
+    const handleEditTask = useCallback(async (values: any) => {
+        try {
+            const success = await editTask({id, ...values});
+            if (success) {
+                getTasks();
+                handleClose();
+            }
+        } catch (error) {
+            console.error('Ошибка при редактировании задачи:', error);
+        }
+    }, [editTask, id, getTasks, handleClose]);
 
     const availableTransitions = useCallback((currentStatus: TaskStatus) => {
         return taskStatusTransitions[currentStatus].reduce((acc, status, index) => {
@@ -55,10 +97,9 @@ export const TaskPage = ({
                     </div>
                 ),
             });
-
             return acc;
-        }, [] as { key: number, label: React.JSX.Element }[])
-    }, []);
+        }, [] as { key: number; label: React.JSX.Element }[]);
+    }, [handleStatusChange]);
 
     const items: MenuProps['items'] = [
         ...availableTransitions(status),
@@ -67,7 +108,7 @@ export const TaskPage = ({
         },
         {
             label: (
-                <div onClick={() => handleDeleteTask()}>
+                <div onClick={handleDeleteTask}>
                     Удалить
                 </div>
             ),
@@ -76,97 +117,50 @@ export const TaskPage = ({
         },
     ];
 
-    const handleStatusChange = useCallback(async (newStatus: TaskStatus) => {
-        const success = await editTask({
-            id,
-            status: newStatus
-        });
-
-        if (success) {
-            getTasks();
-        }
-    }, [getTasks]);
-
-    const handleClick = useCallback (() => {
-        setIsOpen(true);
-    }, [])
-
-    const handleClose = useCallback(() => {
-        setIsOpen(false);
-    }, [])
-
-    const handleEditTask = useCallback(async (values: any) => {
-        try {
-            const success = await editTask({id, ...values});
-
-            if (success) {
-                getTasks();
-                handleClose();
-            }
-        } catch (error) {
-            console.error('Ошибка при редактировании задачи:', error);
-        }
-    }, [handleClose])
-
-    const handleDeleteTask = useCallback(async () => {
-        try {
-            const success = await deleteTask({ id });
-
-            if (success) {
-                getTasks();
-                handleClose();
-            }
-        } catch (error) {
-            console.error('Ошибка при удалении задачи:', error);
-        }
-    }, [deleteTask, getTasks, handleClose, id]);
+    const menuProps = {
+        items,
+    };
 
     return (
         <div className={styles.wrapper}>
             <Breadcrumb
-                items={
-                    [
-                        {
-                            href: '#',
-                            title: (
-                                <>
-                                    <HomeOutlined />
-                                    <span>Listok</span>
-                                </>
-                            )
-                        },
-                        {
-                            title: (
-                                <div className={styles.breadcrumbTaskText}>
-                                    {project?.shortName}-{id}
-                                </div>
-                            )
-                        },
-                    ]
-                }
+                items={[
+                    {
+                        href: '#',
+                        title: (
+                            <>
+                                <HomeOutlined />
+                                <span>Listok</span>
+                            </>
+                        )
+                    },
+                    {
+                        title: (
+                            <div className={styles.breadcrumbTaskText}>
+                                {project?.shortName}-{id}
+                            </div>
+                        )
+                    },
+                ]}
             />
-
             <div className={styles.taskDescriptionInfo}>
                 <div className={styles.taskTitleText}>
                     {title}
                 </div>
-
                 <div className={styles.taskDropDown}>
                     <div className={styles.taskDropDownMenu}>
                         <Dropdown
-                            menu={{ items }}
-                            className={styles.taskDropDownMenu}>
-
+                            menu={menuProps}
+                            className={styles.taskDropDownMenu}
+                        >
                             <Button>
                                 <Space>
                                     Действия
                                     <DownOutlined />
                                 </Space>
                             </Button>
-
                         </Dropdown>
                     </div>
-
                     <div
                         className={styles.taskEdit}
                         onClick={handleClick}
@@ -174,21 +168,16 @@ export const TaskPage = ({
                         <FormOutlined />
                     </div>
                 </div>
-
             </div>
-
             <div className={styles.taskStatus}>
                 <SyncOutlined />
                 <div className={styles.taskStatusText}>
                     Статус:
                 </div>
                 <div className={styles.taskStatusTextDynamic}>
-                    <TaskCardStatus
-                        status={status}
-                    />
+                    <TaskCardStatus status={status} />
                 </div>
             </div>
-
             <div className={styles.taskAssignee}>
                 <UserOutlined />
                 <div className={styles.taskAssigneeText}>
@@ -198,7 +187,6 @@ export const TaskPage = ({
                     {assigneeUser?.name}
                 </div>
             </div>
-
             <div className={styles.taskCreator}>
                 <UserOutlined />
                 <div className={styles.taskCreatorText}>
@@ -208,7 +196,6 @@ export const TaskPage = ({
                     {creatorUser?.name}
                 </div>
             </div>
-
             <div className={styles.taskCreated}>
                 <ClockCircleOutlined />
                 <div className={styles.taskCreatedText}>
@@ -218,7 +205,6 @@ export const TaskPage = ({
                     {formatDateTime(createdAt)}
                 </div>
             </div>
-
             <div className={styles.taskDescriptionTitle}>
                 <InfoCircleOutlined />
                 <div className={styles.taskDescriptionTitleText}>
@@ -228,7 +214,6 @@ export const TaskPage = ({
             <div className={styles.taskDescriptionText}>
                 {description}
             </div>
-
             <div>
                 <TaskModalWindow
                     isVisible={isOpen}

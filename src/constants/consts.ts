@@ -7,3 +7,8 @@ export enum TaskStatus {
     Rejected = 'rejected',
     Done = 'done',
 }
+
+export enum ProjectStatus {
+    AccessReceived = 'access_received',
+    InviteSent = 'invite_sent',
+}
