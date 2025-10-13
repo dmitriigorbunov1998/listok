@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 interface CreateTaskData {
     title: string;
     projectId: number;
@@ -24,9 +26,12 @@ export const useCreateTask = () => {
             }
 
             await response.json();
+            toast.success('Задача успешно создана');
+
             return true;
         } catch (error) {
-           console.error('Неизвестная ошибка', error);
+            toast.error('Ошибка создания задачи');
+            console.error('Неизвестная ошибка', error);
             return false;
         }
     };

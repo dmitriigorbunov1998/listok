@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 interface EditTaskData {
     id: number;
     title?: string;
@@ -21,9 +23,12 @@ export const useEditTask = () => {
                 throw new Error('Ошибка при выполнении запроса');
             }
 
+            toast.success('Задача изменена');
+
             await response.json();
             return true;
         } catch (error) {
+            toast.error('Изменения не сохранены');
             console.error('Неизвестная ошибка', error);
             return false;
         }
