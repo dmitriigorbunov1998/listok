@@ -27,14 +27,34 @@
     font-style: normal;
 }
 
+.createButtonContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 163px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid;
+    padding: 15px;
+    background-color: #1677FF;
+    cursor: pointer;
+}
+
+.projectsCreateButtonIcon {
+    background-image: url('src/assets/images/ProjectsScreen/comment-add.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
 .projectsCreateButtonText {
     font-weight: 400;
     font-size: 14px;
     line-height: 22px;
-}
-
-.projectsContainerCard {
-    max-width: 554px;
+    color: #FFFFFF;
 }
 
 .projectsDescription {
@@ -56,6 +76,7 @@
 }
 
 .projectItem {
+    width: 554px;
     height: 171px;
     border-radius: 16px;
     border: 1px solid #C4D2E5;
@@ -81,6 +102,10 @@
     justify-content: space-between;
     align-items: center;
     max-height: 37px;
+}
+
+.projectDropdownButton {
+    cursor: pointer;
 }
 
 .projectTitle {

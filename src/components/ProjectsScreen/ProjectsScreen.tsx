@@ -2,8 +2,7 @@
 
 import { VerticalMenu } from '@/components/TasksScreen/VerticalMenu/VerticalMenu';
 import './ProjectsScreen.css';
-import { Button } from 'antd';
-import { FolderAddOutlined, GithubOutlined, MoreOutlined, UserOutlined} from '@ant-design/icons';
+import { GithubOutlined, MoreOutlined, UserOutlined} from '@ant-design/icons';
 import { formatDateTime } from '@/utils/date';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
@@ -19,7 +18,7 @@ export const ProjectsScreen = () => {
     useEffect(() => {
         getProjects();
         getUsers();
-    }, [getProjects, getUsers])
+    }, [])
 
     const projectActions = [
         'Создавать новые проекты,',
@@ -55,9 +54,10 @@ export const ProjectsScreen = () => {
             <div className='projectsContainerWrapper'>
                 <div className='projectsTitleRow'>
                     <h2 className='projectsTitle'>Мои проекты</h2>
-                    <Button type="primary" icon={<FolderAddOutlined />} >
+                    <button className='createButtonContent'>
+                        <div className='projectsCreateButtonIcon' />
                         <div className='projectsCreateButtonText'>Создать проект</div>
-                    </Button>
+                    </button>
                 </div>
                 <div className='projectsContainerCard'>
                     <div className='projectsDescription'>
