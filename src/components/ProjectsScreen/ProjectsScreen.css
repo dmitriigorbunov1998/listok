@@ -41,7 +41,7 @@
 }
 
 .projectsCreateButtonIcon {
-    background-image: url('src/assets/images/ProjectsScreen/comment-add.svg');
+    background-image: url("../../assets/images/ProjectsScreen/comment-add.svg");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
