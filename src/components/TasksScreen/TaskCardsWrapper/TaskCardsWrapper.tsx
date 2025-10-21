@@ -16,17 +16,17 @@ interface TaskCardsWrapperProps {
 }
 
 export const TaskCardsWrapper = ({
-     initialTaskId,
-     onTaskSelect
+    initialTaskId,
+    onTaskSelect
 }: TaskCardsWrapperProps) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
 
     const hasFetchedRef = useRef(false);
 
-    const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
-    const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
-    const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
+    const { projects, getProjects } = useProjects();
+    const { tasks, getTasks } = useTasks();
+    const { users, getUsers } = useUsers();
     const { createTask } = useCreateTask();
 
     useEffect(() => {
@@ -68,7 +68,7 @@ export const TaskCardsWrapper = ({
         }
     }, [handleClose]);
 
-    const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask, tasksLoading]);
+    const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask]);
 
     return (
         <div className={styles.taskContent}>
@@ -114,7 +114,8 @@ export const TaskCardsWrapper = ({
                                 projects={projects}
                                 users={users}
                             />
-                            </div>    :
+                            </div>
+                            :
                             <div className={styles.taskPageNoData}>
                                 <Empty />
                             </div>

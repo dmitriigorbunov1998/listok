@@ -1,6 +1,6 @@
-import { supabase } from '@/app/lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
-import { changeCamelToSnakeCase } from '@/utils/changeCamelToSnakeCase';
+import { changeCamelToSnakeCase } from '../../../utils/changeCamelToSnakeCase';
 
 export async function PUT(request: NextRequest) {
     try {

@@ -8,6 +8,14 @@
     cursor: pointer;
 }
 
+.card:hover {
+    background-color: #e5e9ff;
+}
+
+.card:active, .card:focus {
+    border: 1px solid #e5e9ff;
+}
+
 .cardContainer {
     padding: 12px 4px 12px 12px;
 }

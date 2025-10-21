@@ -32,7 +32,7 @@ export const TaskCard = (
                 </div>
                 <div className={styles.rowAssigner}>
                     <Avatar size="small" src={user?.avatar}>
-                        {user?.name?.[0]?.toUpperCase() || 'A'}
+                        {user?.name?.[0]?.toUpperCase()}
                     </Avatar>
                     <div className={styles.assigner}>{user?.name}</div>
                 </div>

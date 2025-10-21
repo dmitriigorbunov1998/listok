@@ -18,6 +18,9 @@ export const VerticalMenu = () => {
 
     const handleMenuClick = ({ key }: { key: string }) => {
         switch (key) {
+            case 'tasks':
+                router.push('/tasks');
+                break;
             case 'projects':
                 router.push('/projects');
                 break;

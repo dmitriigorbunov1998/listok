@@ -1,0 +1,40 @@
+.horizontalMenuContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    border-bottom: 1px solid #f3f3f3;
+    padding: 0 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    background-color: #ffffff;
+}
+
+.horizontalMenuLogo {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px;
+}
+
+.horizontalMenuNotifications,
+.horizontalMenuProfileButton {
+    cursor: pointer;
+}
+
+.horizontalMenuContent {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.horizontalMenuProfileIcon {
+    border-radius: 50%;
+    border: 1px solid #f3f3f3;
+}
+
+.horizontalMenuProfileButton:hover,
+.horizontalMenuNotifications:hover {
+    transition: all 0.3s ease;
+    transform: scale(1.2);
+}
