@@ -7,7 +7,7 @@ import { useTasks } from '@/hooks/useTasks';
 import { useUsers } from '@/hooks/useUsers';
 import { useProjects } from '@/hooks/useProjects';
 import { TaskPage } from '@/components/TasksScreen/TaskCardsWrapper/TaskPage/TaskPage';
-import { Empty } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import { useCreateTask } from '@/hooks/useCreateTask';
 
 interface TaskCardsWrapperProps {
@@ -16,11 +16,12 @@ interface TaskCardsWrapperProps {
 }
 
 export const TaskCardsWrapper = ({
-    initialTaskId,
-    onTaskSelect
-}: TaskCardsWrapperProps) => {
+                                     initialTaskId,
+                                     onTaskSelect
+                                 }: TaskCardsWrapperProps) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const hasFetchedRef = useRef(false);
 
@@ -35,13 +36,25 @@ export const TaskCardsWrapper = ({
         }
         hasFetchedRef.current = true;
 
-        getProjects();
-        getTasks();
-        getUsers();
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                await Promise.all([
+                    getProjects(),
+                    getTasks(),
+                    getUsers()
+                ]);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
 
         if (initialTaskId) {
             const selectedTaskId = Number(initialTaskId.split('-')[1]);
-
             setSelectedTask(selectedTaskId);
         }
     }, []);
@@ -70,6 +83,15 @@ export const TaskCardsWrapper = ({
 
     const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask]);
 
+    // Skeleton для TaskCard
+    const renderTaskCardSkeleton = () => (
+        <div className={styles.taskCards}>
+            <div className={styles.taskCardSkeleton}>
+                <Skeleton active paragraph={{ rows: 3 }} />
+            </div>
+        </div>
+    );
+
     return (
         <div className={styles.taskContent}>
             <div className={styles.taskInfo}>
@@ -82,44 +104,60 @@ export const TaskCardsWrapper = ({
                     </div>
 
                     <div className={styles.taskCardsWrapper}>
-                        {tasks.map((task) => {
-                            const project = projects.find(project => project.id === task.projectId);
-                            const user = users.find(user => user.id === task.assigneeId);
+                        {isLoading ? (
+                            // Показываем скелетоны во время загрузки
+                            <>
+                                {Array.from({ length: 5 }).map((_, index) => (
+                                    <React.Fragment key={index}>
+                                        {renderTaskCardSkeleton()}
+                                    </React.Fragment>
+                                ))}
+                            </>
+                        ) : (
+                            // Показываем реальные задачи после загрузки
+                            tasks.map((task) => {
+                                const project = projects.find(project => project.id === task.projectId);
+                                const user = users.find(user => user.id === task.assigneeId);
 
-                            return (
-                                <div
-                                    className={styles.taskCards}
-                                    key={`${task.title}-${task.id}`}
-                                >
-                                    <TaskCard
-                                        task={task}
-                                        project={project}
-                                        user={user}
-                                        onClick={(() => onCardClick(task.id, task.projectId))}
-                                    />
-                                </div>
-                            );
-                        })}
+                                return (
+                                    <div
+                                        className={styles.taskCards}
+                                        key={`${task.title}-${task.id}`}
+                                    >
+                                        <TaskCard
+                                            task={task}
+                                            project={project}
+                                            user={user}
+                                            onClick={(() => onCardClick(task.id, task.projectId))}
+                                        />
+                                    </div>
+                                );
+                            })
+                        )}
                     </div>
 
                 </div>
 
                 <div className={styles.taskPage}>
-                    {
-                        visibleTask?.title ?
-                            <div className={styles.taskPageInfo}>
+                    {isLoading ? (
+                        // Skeleton для TaskPage во время загрузки
+                        <div className={styles.taskPageInfo}>
+                            <Skeleton active paragraph={{ rows: 8 }} />
+                        </div>
+                    ) : visibleTask?.title ? (
+                        <div className={styles.taskPageInfo}>
                             <TaskPage
                                 getTasks={getTasks}
                                 selectedTask={visibleTask}
                                 projects={projects}
                                 users={users}
                             />
-                            </div>
-                            :
-                            <div className={styles.taskPageNoData}>
-                                <Empty />
-                            </div>
-                        }
+                        </div>
+                    ) : (
+                        <div className={styles.taskPageNoData}>
+                            <Empty />
+                        </div>
+                    )}
                 </div>
             </div>
 

@@ -6,14 +6,12 @@
     background-color: #EDEDED;
     font-family: 'SF Pro Display', sans-serif;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .card:hover {
-    background-color: #e5e9ff;
-}
-
-.card:active, .card:focus {
-    border: 1px solid #e5e9ff;
+    background-color: #f3f3f3 !important;;
+    transform: scale(1.02);
 }
 
 .cardContainer {

@@ -1,14 +1,10 @@
-.taskContent {
-    padding: 50px 0 0 200px;
-}
-
 .taskInfo {
     display: flex;
     flex-direction: row;
 }
 
 .createTaskButton {
-    margin: 10px 10px 0 10px;
+    padding: 10px 10px 0 10px;
 }
 
 .taskCardsWrapper {
@@ -16,7 +12,7 @@
     flex-direction: column;
     height: 100vh;
     overflow-y: auto;
-    padding: 0 10px 0 10px;
+    padding: 0 10px;
     margin: 10px 0 0 0;
     gap: 10px;
 }
@@ -31,4 +27,11 @@
     align-items: center;
     width: calc(100vw - 600px);
     height: calc(100vh - 20px);
+}
+
+.taskCardSkeleton {
+    padding: 12px;
+    border-radius: 8px;
+    background: #fff;
+    margin-bottom: 8px;
 }

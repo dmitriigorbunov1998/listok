@@ -2,7 +2,7 @@ import styles from './TaskCard.module.css';
 import { TaskCardStatus } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { Avatar } from 'antd';
 import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import { Project, Task, User } from '@/types';
 
 export interface TaskCardProps {
@@ -20,8 +20,24 @@ export const TaskCard = (
         onClick
     }: TaskCardProps) => {
 
+    const [buttonColor, setButtonColor] = useState('#EDEDED');
+
+    const handleClick = () => {
+        const backgroundColor = '#e5e9ff';
+        setButtonColor(backgroundColor);
+    };
+
     return (
-        <div className={styles.card} onClick={onClick}>
+        <div
+            className={styles.card}
+            onClick={() => {
+                handleClick();
+                onClick();
+            }}
+            style={{
+                backgroundColor: buttonColor
+            }}
+        >
             <div className={styles.cardContainer}>
                 <div className={styles.rowStatus}>
                     <div className={styles.taskId}>{project?.shortName}-{task.id}</div>
