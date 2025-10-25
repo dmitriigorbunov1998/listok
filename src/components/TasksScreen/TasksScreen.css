@@ -1,7 +1,3 @@
-.tasksScreenContainer {
-    height: 100vh;
-}
-
 .tasksScreenRow {
     display: flex;
     flex-direction: row;

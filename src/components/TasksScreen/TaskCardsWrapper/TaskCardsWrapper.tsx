@@ -1,5 +1,11 @@
 import styles from './TaskCardsWrapper.module.css';
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+    useMemo
+} from 'react';
 import { CreateTaskButton } from '@/components/TasksScreen/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
 import { TaskModalWindow } from '@/components/TasksScreen/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
 import { TaskCard } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCard';
@@ -15,10 +21,12 @@ interface TaskCardsWrapperProps {
     onTaskSelect: (taskId: string) => void;
 }
 
-export const TaskCardsWrapper = ({
-                                     initialTaskId,
-                                     onTaskSelect
-                                 }: TaskCardsWrapperProps) => {
+export const TaskCardsWrapper = (
+        {
+            initialTaskId,
+            onTaskSelect,
+        }: TaskCardsWrapperProps
+    ) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -67,30 +75,21 @@ export const TaskCardsWrapper = ({
         onTaskSelect(`${selectedTaskProject?.shortName}-${id}`);
     }, [projects]);
 
-    const handleClose = useCallback(() => setIsModalVisible(false), []);
+    const handleCloseModal = useCallback(() => setIsModalVisible(false), []);
 
     const handleCreateTask = useCallback(async (values: any) => {
         try {
             const success = await createTask(values);
 
             if (success) {
-                handleClose();
+                handleCloseModal();
             }
         } catch (error) {
             console.error('Ошибка при создании задачи:', error);
         }
-    }, [handleClose]);
+    }, [handleCloseModal]);
 
     const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask]);
-
-    // Skeleton для TaskCard
-    const renderTaskCardSkeleton = () => (
-        <div className={styles.taskCards}>
-            <div className={styles.taskCardSkeleton}>
-                <Skeleton active paragraph={{ rows: 3 }} />
-            </div>
-        </div>
-    );
 
     return (
         <div className={styles.taskContent}>
@@ -105,16 +104,18 @@ export const TaskCardsWrapper = ({
 
                     <div className={styles.taskCardsWrapper}>
                         {isLoading ? (
-                            // Показываем скелетоны во время загрузки
                             <>
                                 {Array.from({ length: 5 }).map((_, index) => (
                                     <React.Fragment key={index}>
-                                        {renderTaskCardSkeleton()}
+                                        <div className={styles.taskCards}>
+                                            <div className={styles.taskCardSkeleton}>
+                                                <Skeleton active paragraph={{ rows: 3 }} />
+                                            </div>
+                                        </div>
                                     </React.Fragment>
                                 ))}
                             </>
                         ) : (
-                            // Показываем реальные задачи после загрузки
                             tasks.map((task) => {
                                 const project = projects.find(project => project.id === task.projectId);
                                 const user = users.find(user => user.id === task.assigneeId);
@@ -140,7 +141,6 @@ export const TaskCardsWrapper = ({
 
                 <div className={styles.taskPage}>
                     {isLoading ? (
-                        // Skeleton для TaskPage во время загрузки
                         <div className={styles.taskPageInfo}>
                             <Skeleton active paragraph={{ rows: 8 }} />
                         </div>
@@ -163,7 +163,7 @@ export const TaskCardsWrapper = ({
 
             <TaskModalWindow
                 isVisible={isModalVisible}
-                onClose={handleClose}
+                onClose={handleCloseModal}
                 onSubmit={handleCreateTask}
                 users={users}
                 projects={projects}

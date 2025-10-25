@@ -14,7 +14,7 @@ export const TasksScreen = ({ initialTaskId }: ContentProps ) => {
     const router = useRouter();
 
     return (
-        <div className='tasksScreenContainer'>
+        <div className='tasksScreen'>
             <HorizontalMenu />
             <div className='tasksScreenRow'>
                 <VerticalMenu />

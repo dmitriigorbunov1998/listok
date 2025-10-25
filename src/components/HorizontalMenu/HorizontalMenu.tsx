@@ -7,16 +7,16 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Drawer } from 'antd';
 
-export const HorizontalMenu = (props: any) => {
+export const HorizontalMenu = () => {
     const router = useRouter();
-    const [open, setOpen] = useState(false);
+    const [openNotifications, setOpenNotifications] = useState(false);
 
     const showDrawer = () => {
-        setOpen(true);
+        setOpenNotifications(true);
     };
 
-    const onClose = () => {
-        setOpen(false);
+    const onCloseDrawer = () => {
+        setOpenNotifications(false);
     };
 
     const handleRedirectToAuth = () => {
@@ -24,28 +24,23 @@ export const HorizontalMenu = (props: any) => {
     };
 
     return (
-        <div>
+        <div className="horizontalMenu">
             <div className="horizontalMenuContainer">
                 <div className="horizontalMenuLogo">listok</div>
                 <div className="horizontalMenuContent">
                     <div className="horizontalMenuNotifications" onClick={showDrawer}>
                         <NotificationOutlined />
                     </div>
-                    <div className="horizontalMenuProfile">
-                        <div className="horizontalMenuProfileLogo">
-                            <div className="horizontalMenuProfileIcon"></div>
-                        </div>
-                        <div className="horizontalMenuProfileButton" onClick={handleRedirectToAuth}>
-                            <LogoutOutlined />
-                        </div>
+                    <div className="horizontalMenuLogout" onClick={handleRedirectToAuth}>
+                        <LogoutOutlined />
                     </div>
                 </div>
             </div>
             <Drawer
                 title="Уведомления"
                 closable={{ 'aria-label': 'Close Button' }}
-                onClose={onClose}
-                open={open}
+                onClose={onCloseDrawer}
+                open={openNotifications}
             >
             </Drawer>
         </div>

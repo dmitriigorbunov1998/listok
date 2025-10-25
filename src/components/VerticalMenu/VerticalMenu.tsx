@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 
 import { Menu } from 'antd';
-import styles from './VerticalMenu.module.css';
+import './VerticalMenu.css';
 import { useRouter } from 'next/navigation';
 
 export const VerticalMenu = () => {
@@ -53,11 +53,11 @@ export const VerticalMenu = () => {
     ];
 
     return (
-        <div className={styles.menuContainer}>
+        <div className='verticalMenuContainer'>
             <Menu
                 defaultSelectedKeys={['/']}
                 items={items}
-                className={styles.menu}
+                className='verticalMenuItems'
                 onClick={handleMenuClick}
             />
         </div>

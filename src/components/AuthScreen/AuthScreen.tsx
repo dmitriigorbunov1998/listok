@@ -15,8 +15,6 @@ interface AuthScreenProps {
     onSuccess?: (values: FieldType) => void;
     onError?: (error: any) => void;
     isLoading?: boolean;
-    title?: string;
-    redirectUrl?: string;
 }
 
 export const AuthScreen = (
@@ -54,6 +52,9 @@ export const AuthScreen = (
 
     return (
         <div className="auth">
+            <div className='authLogo'>listok
+                <div className="authText">Авторизация</div>
+            </div>
             <Form
                 form={form}
                 name="basic"

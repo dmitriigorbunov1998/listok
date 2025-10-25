@@ -17,24 +17,19 @@
     font-size: 24px;
 }
 
-.horizontalMenuNotifications,
-.horizontalMenuProfileButton {
-    cursor: pointer;
-}
-
 .horizontalMenuContent {
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
 
-.horizontalMenuProfileIcon {
-    border-radius: 50%;
-    border: 1px solid #f3f3f3;
+.horizontalMenuNotifications,
+.horizontalMenuLogout {
+    cursor: pointer;
 }
 
-.horizontalMenuProfileButton:hover,
-.horizontalMenuNotifications:hover {
+.horizontalMenuNotifications:hover,
+.horizontalMenuLogout:hover {
     transition: all 0.3s ease;
     transform: scale(1.2);
 }
