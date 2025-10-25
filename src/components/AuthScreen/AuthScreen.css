@@ -1,0 +1,25 @@
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+.authLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 400;
+    font-style: normal;
+    padding: 32px;
+    gap: 16px;
+}
+
+.authText {
+    font-size: 16px;
+    font-weight: 200;
+    font-style: normal;
+}
