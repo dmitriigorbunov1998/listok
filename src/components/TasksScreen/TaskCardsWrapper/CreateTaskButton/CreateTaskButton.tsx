@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import styles from './CreateTaskButton.module.css';
+import './CreateTaskButton.css';
 
 interface CreateTaskButtonProps {
     onClick: () => void;
@@ -12,7 +12,7 @@ export const CreateTaskButton = ({ onClick }: CreateTaskButtonProps) => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={onClick}
-            className={styles.button}
+            className='button'
         >
             Создать задачу
         </Button>

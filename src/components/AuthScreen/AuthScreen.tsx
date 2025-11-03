@@ -1,108 +1,148 @@
 'use client';
 
 import React, { useState } from 'react';
+import { App, Button, Checkbox, Form, Input } from 'antd';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { createClient } from '@/app/lib/supabase/client';
 import './AuthScreen.css';
+import { AuthGmailButton } from '@/components/HorizontalMenu/AuthGmailButton/AuthGmailButton';
 
 type FieldType = {
-    username?: string;
-    password?: string;
-    remember?: string;
+    email: string;
+    password: string;
+    remember?: boolean;
 };
 
-interface AuthScreenProps {
-    onSuccess?: (values: FieldType) => void;
-    onError?: (error: any) => void;
-    isLoading?: boolean;
-}
-
-export const AuthScreen = (
-    {
-        onError,
-        isLoading = false,
-    }: AuthScreenProps) => {
-
+export const AuthScreen = () => {
     const [form] = Form.useForm();
+    const router = useRouter();
+    const supabase = createClient();
+    const { message, notification } = App.useApp(); // ✅ используем контекст App
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [rememberMe, setRememberMe] = useState(true);
+
+    const mutation = useMutation({
+        mutationFn: async (values: FieldType) => {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: values.email,
+                password: values.password,
+            });
+
+            if (error) throw error;
+            return data;
+        },
+        onSuccess: () => {
+            void message.success('✅ Вход на портал осуществлён');
+            router.push('/');
+        },
+        onError: (error: any) => {
+            console.error('Ошибка при входе:', error.message);
+            notification.error({
+                message: 'Ошибка при входе',
+                description: 'Проверьте введённые данные и попробуйте снова.',
+                placement: 'topRight',
+            });
+        },
+    });
+
+    const handleOnclickRegistration = () => {
+        router.push('/register');
+    };
 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+        setIsSubmitting(true);
         try {
-            setIsSubmitting(true);
-        } catch (error) {
-            console.error('Login error', error);
-            message.error('Login failed!');
-            onError?.(error);
+            await mutation.mutateAsync(values);
+        } catch (err) {
+            console.error('Login error:', err);
         } finally {
             setIsSubmitting(false);
         }
     };
 
     const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-        message.error('Please check the form for errors');
-        onError?.(errorInfo);
+        notification.warning({
+            message: 'Форма заполнена неверно',
+            description: 'Проверьте правильность введённых данных.',
+        });
+        console.warn('Failed:', errorInfo);
     };
 
     const handleReset = () => {
         form.resetFields();
-        setRememberMe(true);
     };
 
     return (
-        <div className="auth">
-            <div className='authLogo'>listok
+        <div className="authContainer">
+            <div className="authLogo">
+                listok
                 <div className="authText">Авторизация</div>
             </div>
+
             <Form
                 form={form}
-                name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                style={{ maxWidth: 600 }}
-                initialValues={{ remember: rememberMe }}
+                name="authForm"
+                layout="vertical" // ✅ метки сверху
+                style={{
+                    maxWidth: 482,
+                    margin: '0 auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                }}
+                initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 <Form.Item<FieldType>
-                    label="Username"
-                    name="username"
-                    rules={[{ required: true, message: 'Пожалуйста введите имя' }]}
+                    label="Email"
+                    name="email"
+                    rules={[
+                        { required: true, message: 'Введите email!' },
+                        { type: 'email', message: 'Некорректный email!' },
+                    ]}
                 >
-                    <Input />
+                    <Input placeholder="example@mail.com" />
                 </Form.Item>
 
                 <Form.Item<FieldType>
-                    label="Password"
+                    label="Пароль"
                     name="password"
-                    rules={[{ required: true, message: 'Пожалуйста введите пароль' }]}
+                    rules={[{ required: true, message: 'Введите пароль!' }]}
                 >
-                    <Input.Password />
+                    <Input.Password placeholder="Введите пароль" />
                 </Form.Item>
 
-                <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
-                    <Checkbox
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                    >
-                        Remember me
-                    </Checkbox>
+                <Form.Item<FieldType>
+                    name="remember"
+                    valuePropName="checked"
+                    wrapperCol={{ offset: 4, span: 16 }}
+                >
+                    <Checkbox>Запомнить меня</Checkbox>
                 </Form.Item>
 
-                <Form.Item label={null}>
+                <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
                     <Button
                         type="primary"
                         htmlType="submit"
-                        loading={isSubmitting || isLoading}
-                        style={{ marginRight: 8 }}
+                        loading={isSubmitting || mutation.isPending}
+                        style={{ marginRight: 16 }}
                     >
-                        Submit
+                        Войти
                     </Button>
-                    <Button onClick={handleReset}>
-                        Reset
+
+                    <Button
+                        htmlType="button"
+                        onClick={handleOnclickRegistration}
+                        style={{ marginRight: 16 }}
+                    >
+                        Регистрация
                     </Button>
+
+                    <Button onClick={handleReset}>Сбросить</Button>
+                    <AuthGmailButton />
                 </Form.Item>
             </Form>
         </div>

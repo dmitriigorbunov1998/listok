@@ -1,4 +1,4 @@
-import styles from './TaskCardsWrapper.module.css';
+import './TaskCardsWrapper.css';
 import React, {
     useState,
     useEffect,
@@ -92,23 +92,23 @@ export const TaskCardsWrapper = (
     const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask]);
 
     return (
-        <div className={styles.taskContent}>
-            <div className={styles.taskInfo}>
-                <div className={styles.taskWrapper}>
+        <div className='taskContent'>
+            <div className='taskInfo'>
+                <div className='taskWrapper'>
 
-                    <div className={styles.createTaskButton}>
+                    <div className='createTaskButton'>
                         <CreateTaskButton
                             onClick={showModal}
                         />
                     </div>
 
-                    <div className={styles.taskCardsWrapper}>
+                    <div className='taskCardsWrapper'>
                         {isLoading ? (
                             <>
                                 {Array.from({ length: 5 }).map((_, index) => (
                                     <React.Fragment key={index}>
-                                        <div className={styles.taskCards}>
-                                            <div className={styles.taskCardSkeleton}>
+                                        <div className='taskCards'>
+                                            <div className='taskCardSkeleton'>
                                                 <Skeleton active paragraph={{ rows: 3 }} />
                                             </div>
                                         </div>
@@ -122,7 +122,7 @@ export const TaskCardsWrapper = (
 
                                 return (
                                     <div
-                                        className={styles.taskCards}
+                                        className='taskCards'
                                         key={`${task.title}-${task.id}`}
                                     >
                                         <TaskCard
@@ -139,13 +139,13 @@ export const TaskCardsWrapper = (
 
                 </div>
 
-                <div className={styles.taskPage}>
+                <div className='taskPage'>
                     {isLoading ? (
-                        <div className={styles.taskPageInfo}>
+                        <div className='taskPageInfo'>
                             <Skeleton active paragraph={{ rows: 8 }} />
                         </div>
                     ) : visibleTask?.title ? (
-                        <div className={styles.taskPageInfo}>
+                        <div className='taskPageInfo'>
                             <TaskPage
                                 getTasks={getTasks}
                                 selectedTask={visibleTask}
@@ -154,7 +154,7 @@ export const TaskCardsWrapper = (
                             />
                         </div>
                     ) : (
-                        <div className={styles.taskPageNoData}>
+                        <div className='taskPageNoData'>
                             <Empty />
                         </div>
                     )}

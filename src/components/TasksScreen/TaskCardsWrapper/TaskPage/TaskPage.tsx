@@ -1,4 +1,4 @@
-import styles from './TaskPage.module.css';
+import './TaskPage.css';
 import { useCallback, useState } from 'react';
 import { Breadcrumb } from 'antd';
 import {
@@ -20,7 +20,7 @@ import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
 import { useEditTask } from '@/hooks/useEditTask';
 import { useDeleteTask } from '@/hooks/useDeleteTask';
 import { taskStatusLabel, taskStatusTransitions } from '@/utils/taskStatusTransitions';
-import { TaskStatus } from '@/constants/consts';
+import { TaskStatus } from '@/constants/constants';
 
 interface TaskPageProps {
     selectedTask: Task;
@@ -122,7 +122,7 @@ export const TaskPage = ({
     };
 
     return (
-        <div className={styles.wrapper}>
+        <div className='wrapper'>
             <Breadcrumb
                 items={[
                     {
@@ -136,22 +136,22 @@ export const TaskPage = ({
                     },
                     {
                         title: (
-                            <div className={styles.breadcrumbTaskText}>
+                            <div className='breadcrumbTaskText'>
                                 {project?.shortName}-{id}
                             </div>
                         )
                     },
                 ]}
             />
-            <div className={styles.taskDescriptionInfo}>
-                <div className={styles.taskTitleText}>
+            <div className='taskDescriptionInfo'>
+                <div className='taskTitleText'>
                     {title}
                 </div>
-                <div className={styles.taskDropDown}>
-                    <div className={styles.taskDropDownMenu}>
+                <div className='taskDropDown'>
+                    <div className='taskDropDownMenu'>
                         <Dropdown
                             menu={menuProps}
-                            className={styles.taskDropDownMenu}
+                            className='taskDropDownMenu'
                         >
                             <Button>
                                 <Space>
@@ -162,56 +162,56 @@ export const TaskPage = ({
                         </Dropdown>
                     </div>
                     <div
-                        className={styles.taskEdit}
+                        className='taskEdit'
                         onClick={handleClick}
                     >
                         <FormOutlined />
                     </div>
                 </div>
             </div>
-            <div className={styles.taskStatus}>
+            <div className='taskStatus'>
                 <SyncOutlined />
-                <div className={styles.taskStatusText}>
+                <div className='taskStatusText'>
                     Статус:
                 </div>
-                <div className={styles.taskStatusTextDynamic}>
+                <div className='taskStatusTextDynamic'>
                     <TaskCardStatus status={status} />
                 </div>
             </div>
-            <div className={styles.taskAssignee}>
+            <div className='taskAssignee'>
                 <UserOutlined />
-                <div className={styles.taskAssigneeText}>
+                <div className='taskAssigneeText'>
                     Исполнитель:
                 </div>
-                <div className={styles.taskAssigneeTextDynamic}>
+                <div className='taskAssigneeTextDynamic'>
                     {assigneeUser?.name}
                 </div>
             </div>
-            <div className={styles.taskCreator}>
+            <div className='taskCreator'>
                 <UserOutlined />
-                <div className={styles.taskCreatorText}>
+                <div className='taskCreatorText'>
                     Автор:
                 </div>
-                <div className={styles.taskCreatorTextDynamic}>
+                <div className='taskCreatorTextDynamic'>
                     {creatorUser?.name}
                 </div>
             </div>
-            <div className={styles.taskCreated}>
+            <div className='taskCreated'>
                 <ClockCircleOutlined />
-                <div className={styles.taskCreatedText}>
+                <div className='taskCreatedText'>
                     Создана:
                 </div>
-                <div className={styles.taskCreatedTextDynamic}>
+                <div className='taskCreatedTextDynamic'>
                     {formatDateTime(createdAt)}
                 </div>
             </div>
-            <div className={styles.taskDescriptionTitle}>
+            <div className='taskDescriptionTitle'>
                 <InfoCircleOutlined />
-                <div className={styles.taskDescriptionTitleText}>
+                <div className='taskDescriptionTitleText'>
                     Описание:
                 </div>
             </div>
-            <div className={styles.taskDescriptionText}>
+            <div className='taskDescriptionText'>
                 {description}
             </div>
             <div>

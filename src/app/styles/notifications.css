@@ -1,0 +1,38 @@
+/* Только для уведомлений Ant Design */
+.ant-message .ant-message-notice-content {
+    border-radius: 12px !important;
+    padding: 12px 20px !important;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.4s ease forwards;
+}
+
+.ant-message .ant-message-success {
+    background-color: #e6ffed !important;
+    color: #1a7f37 !important;
+    border-left: 4px solid #1db954 !important;
+}
+
+.ant-message .ant-message-error {
+    background-color: #ffe6e6 !important;
+    color: #b80000 !important;
+    border-left: 4px solid #ff4d4f !important;
+}
+
+.ant-message .ant-message-warning {
+    background-color: #fff7e6 !important;
+    color: #ad6800 !important;
+    border-left: 4px solid #faad14 !important;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

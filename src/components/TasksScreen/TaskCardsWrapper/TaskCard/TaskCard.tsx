@@ -1,4 +1,4 @@
-import styles from './TaskCard.module.css';
+import './TaskCard.css';
 import { TaskCardStatus } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { Avatar } from 'antd';
 import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
@@ -29,7 +29,7 @@ export const TaskCard = (
 
     return (
         <div
-            className={styles.card}
+            className='card'
             onClick={() => {
                 handleClick();
                 onClick();
@@ -38,31 +38,31 @@ export const TaskCard = (
                 backgroundColor: buttonColor
             }}
         >
-            <div className={styles.cardContainer}>
-                <div className={styles.rowStatus}>
-                    <div className={styles.taskId}>{project?.shortName}-{task.id}</div>
+            <div className='cardContainer'>
+                <div className='rowStatus'>
+                    <div className='taskId'>{project?.shortName}-{task.id}</div>
                     <TaskCardStatus status={task.status} />
                 </div>
-                <div className={styles.title} title={task.title}>
+                <div className='title' title={task.title}>
                     {task.title}
                 </div>
-                <div className={styles.rowAssigner}>
+                <div className='rowAssigner'>
                     <Avatar size="small" src={user?.avatar}>
                         {user?.name?.[0]?.toUpperCase()}
                     </Avatar>
-                    <div className={styles.assigner}>{user?.name}</div>
+                    <div className='assigner'>{user?.name}</div>
                 </div>
-                <div className={styles.data}>
-                    <div className={styles.rowProjectName}>
-                        <div className={styles.rowProjectNameText}>
+                <div className='data'>
+                    <div className='rowProjectName'>
+                        <div className='rowProjectNameText'>
                             <EnvironmentOutlined />
-                            <div className={styles.projectName}>{project?.name}</div>
+                            <div className='projectName'>{project?.name}</div>
                         </div>
                     </div>
-                    <div className={styles.rowDate}>
-                        <div className={styles.rowDateText}>
+                    <div className='rowDate'>
+                        <div className='rowDateText'>
                             <ClockCircleOutlined />
-                            <div className={styles.date}>
+                            <div className='date'>
                                 {new Date(task.createdAt).toLocaleDateString()}
                             </div>
                         </div>

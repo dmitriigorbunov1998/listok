@@ -1,5 +1,5 @@
-import { TaskStatus } from '@/constants/consts';
-import { ProjectStatus } from '@/constants/consts';
+import { TaskStatus } from '@/constants/constants';
+import { ProjectStatus } from '@/constants/constants';
 
 export interface User {
     id: number;
