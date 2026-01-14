@@ -2,7 +2,7 @@
 
 import { VerticalMenu } from '@/components/VerticalMenu/VerticalMenu';
 import './ProjectsScreen.css';
-import { GithubOutlined, MoreOutlined, UserOutlined} from '@ant-design/icons';
+import { GithubOutlined, MoreOutlined, UserOutlined } from '@ant-design/icons';
 import { formatDateTime } from '@/utils/date';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
@@ -10,7 +10,6 @@ import { ProjectCardStatus } from '@/components/ProjectsScreen/ProjectCardStatus
 import { useProjects } from '@/hooks/useProjects';
 import { useUsers } from '@/hooks/useUsers';
 import { useEffect } from 'react';
-import { HorizontalMenu } from '@/components/HorizontalMenu/HorizontalMenu';
 
 export const ProjectsScreen = () => {
     const { projects, getProjects } = useProjects();

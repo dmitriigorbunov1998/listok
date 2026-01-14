@@ -1,4 +1,4 @@
-import { ProjectStatus } from '@/constants/constants';
+import { ProjectStatus } from '@/constants/consts';
 import { useMemo } from 'react';
 import './ProjectCardStatus.css';
 

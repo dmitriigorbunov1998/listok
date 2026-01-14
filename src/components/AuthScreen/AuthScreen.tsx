@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { App, Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
 import type { FormProps } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { createClient } from '@/app/lib/supabase/client';
 import './AuthScreen.css';
 import { AuthGmailButton } from '@/components/HorizontalMenu/AuthGmailButton/AuthGmailButton';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type FieldType = {
     email: string;
@@ -19,7 +21,6 @@ export const AuthScreen = () => {
     const [form] = Form.useForm();
     const router = useRouter();
     const supabase = createClient();
-    const { message, notification } = App.useApp(); // ✅ используем контекст App
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const mutation = useMutation({
@@ -33,16 +34,11 @@ export const AuthScreen = () => {
             return data;
         },
         onSuccess: () => {
-            void message.success('✅ Вход на портал осуществлён');
+            toast.success('✅ Вход на портал осуществлён');
             router.push('/');
         },
-        onError: (error: any) => {
-            console.error('Ошибка при входе:', error.message);
-            notification.error({
-                message: 'Ошибка при входе',
-                description: 'Проверьте введённые данные и попробуйте снова.',
-                placement: 'topRight',
-            });
+        onError: () => {
+            toast.error('Ошибка при входе. Проверьте введённые данные и попробуйте снова.');
         },
     });
 
@@ -62,10 +58,7 @@ export const AuthScreen = () => {
     };
 
     const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        notification.warning({
-            message: 'Форма заполнена неверно',
-            description: 'Проверьте правильность введённых данных.',
-        });
+        toast.error('❌ Форма заполнена неверно. Проверьте правильность введённых данных.');
         console.warn('Failed:', errorInfo);
     };
 

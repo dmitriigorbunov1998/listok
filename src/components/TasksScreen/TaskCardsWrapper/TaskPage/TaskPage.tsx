@@ -20,7 +20,7 @@ import { TaskModalWindow } from '../TaskModalWindow/TaskModalWindow';
 import { useEditTask } from '@/hooks/useEditTask';
 import { useDeleteTask } from '@/hooks/useDeleteTask';
 import { taskStatusLabel, taskStatusTransitions } from '@/utils/taskStatusTransitions';
-import { TaskStatus } from '@/constants/constants';
+import { TaskStatus } from '@/constants/consts';
 
 interface TaskPageProps {
     selectedTask: Task;

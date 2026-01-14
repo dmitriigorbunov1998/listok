@@ -1,4 +1,4 @@
-import { TaskStatus } from '@/constants/constants';
+import { TaskStatus } from '@/constants/consts';
 
 export const taskStatusTransitions = {
     [TaskStatus.Open]: [TaskStatus.InProgress, TaskStatus.Rejected],
