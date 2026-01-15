@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { App, Button, Form, Input, Checkbox } from 'antd';
+import { Button, Form, Input, Checkbox } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { createClient } from '@/app/lib/supabase/client';
 import './RegisterScreen.css';
+import { toast } from 'react-toastify';
 
 type FieldType = {
     email: string;
@@ -18,7 +19,6 @@ export const RegisterScreen = () => {
     const [form] = Form.useForm();
     const router = useRouter();
     const supabase = createClient();
-    const { message, notification } = App.useApp();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const mutation = useMutation({
@@ -31,16 +31,12 @@ export const RegisterScreen = () => {
             return data;
         },
         onSuccess: () => {
-            void message.success('✅ Пользователь зарегистрирован');
+            toast.success('✅ Пользователь зарегистрирован');
             router.push('/auth');
         },
         onError: (error: any) => {
-            console.error('Ошибка регистрации:', error.message);
-            notification.error({
-                message: 'Ошибка при регистрации',
-                description: 'Проверьте корректность данных и попробуйте снова.',
-                placement: 'topRight',
-            });
+            console.error('Ошибка регистрации:', error?.message);
+            toast.error('❌ Ошибка при регистрации. Проверьте корректность данных и попробуйте снова.');
         },
     });
 
@@ -54,10 +50,7 @@ export const RegisterScreen = () => {
     };
 
     const onFinishFailed = (errorInfo: any) => {
-        notification.warning({
-            message: 'Ошибка заполнения формы',
-            description: 'Проверьте введённые данные.',
-        });
+        toast.warning('⚠️ Проверьте корректность заполнения формы.');
         console.warn('Failed:', errorInfo);
     };
 
