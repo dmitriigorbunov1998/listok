@@ -2,26 +2,35 @@ import styles from './TaskCard.module.css';
 import { TaskCardStatus } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { Avatar } from 'antd';
 import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Project, Task, User } from '@/types';
 
 export interface TaskCardProps {
     task: Task;
     project?: Project;
     user?: User;
-    onClick: () => void;
+    onCardClick: (id: number, projectId: number) => void;
 }
 
-export const TaskCard = (
+export const TaskCard = React.memo((
     {
         task,
         project,
         user,
-        onClick
+        onCardClick,
     }: TaskCardProps) => {
 
+    const handleClick = useCallback(() => {
+        onCardClick(task.id, task.projectId);
+    }, [onCardClick, task.id, task.projectId]);
+
+    const formattedDate = useMemo(
+        () => new Date(task.createdAt).toLocaleDateString(),
+        [task.createdAt],
+    );
+
     return (
-        <div className={styles.card} onClick={onClick}>
+        <div className={styles.card} onClick={handleClick}>
             <div className={styles.cardContainer}>
                 <div className={styles.rowStatus}>
                     <div className={styles.taskId}>{project?.shortName}-{task.id}</div>
@@ -47,7 +56,7 @@ export const TaskCard = (
                         <div className={styles.rowDateText}>
                             <ClockCircleOutlined />
                             <div className={styles.date}>
-                                {new Date(task.createdAt).toLocaleDateString()}
+                                {formattedDate}
                             </div>
                         </div>
                     </div>
@@ -55,4 +64,4 @@ export const TaskCard = (
             </div>
         </div>
     );
-};
+});
