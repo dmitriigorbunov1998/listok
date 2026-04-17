@@ -1,9 +1,10 @@
 import { TasksScreen } from '@/components/TasksScreen/TasksScreen';
 
-export default function Home({
+export default async function Home({
     searchParams
 }: {
-    searchParams: { task?: string }
+    searchParams?: Promise<{ task?: string }>
 }) {
-    return <TasksScreen initialTaskId={searchParams.task} />
+     const params = searchParams ? await searchParams : {};
+    return <TasksScreen initialTaskId={params.task} />
 };
