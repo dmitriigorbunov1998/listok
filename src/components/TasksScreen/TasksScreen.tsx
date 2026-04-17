@@ -4,7 +4,7 @@ import { VerticalMenu } from '@/components/TasksScreen/VerticalMenu/VerticalMenu
 import { TaskCardsWrapper } from '@/components/TasksScreen/TaskCardsWrapper/TaskCardsWrapper';
 import styles from './TasksScreen.module.css';
 import { useRouter } from 'next/navigation';
-import { useCallback, useRef } from "react";
+import { useCallback, useRef } from 'react';
 
 interface ContentProps {
     initialTaskId?: string;
