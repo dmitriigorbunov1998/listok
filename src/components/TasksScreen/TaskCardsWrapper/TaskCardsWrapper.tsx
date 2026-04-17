@@ -24,37 +24,50 @@ export const TaskCardsWrapper = ({
 
     const hasFetchedRef = useRef(false);
 
+    const onTaskSelectRef = useRef(onTaskSelect);
+    onTaskSelectRef.current = onTaskSelect;
+
     const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
     const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
     const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
     const { createTask } = useCreateTask();
 
+    const projectsMap = useMemo(() => {
+        const map = new Map<number, typeof projects[0]>();
+        projects.forEach(project => map.set(project.id, project));
+        return map;
+    }, [projects]);
+
+    const usersMap = useMemo(() => {
+        const map = new Map<number, typeof users[0]>();
+        users.forEach(user => map.set(user.id, user));
+        return map;
+    }, [users]);
+
     useEffect(() => {
-        if (hasFetchedRef.current) {
-            return;
-        }
+        if (hasFetchedRef.current) return;
         hasFetchedRef.current = true;
 
         getProjects();
         getTasks();
         getUsers();
-
-        if (initialTaskId) {
-            const selectedTaskId = Number(initialTaskId.split('-')[1]);
-
-            setSelectedTask(selectedTaskId);
-        }
     }, []);
 
+    useEffect(() => {
+        if (initialTaskId) {
+            const selectedTaskId = Number(initialTaskId.split('-')[1]);
+            setSelectedTask(selectedTaskId);
+        }
+    }, [initialTaskId]);
+
     const showModal = useCallback(() => setIsModalVisible(true), []);
+    const handleClose = useCallback(() => setIsModalVisible(false), []);
 
     const onCardClick = useCallback((id: number, projectId: number) => {
-        const selectedTaskProject = projects.find((project) => project.id === projectId);
+        const selectedTaskProject = projectsMap.get(projectId);
         setSelectedTask(id);
-        onTaskSelect(`${selectedTaskProject?.shortName}-${id}`);
-    }, [projects]);
-
-    const handleClose = useCallback(() => setIsModalVisible(false), []);
+        onTaskSelectRef.current(`${selectedTaskProject?.shortName}-${id}`);
+    }, [projectsMap]);
 
     const handleCreateTask = useCallback(async (values: any) => {
         try {
@@ -62,13 +75,16 @@ export const TaskCardsWrapper = ({
 
             if (success) {
                 handleClose();
+                getTasks();
             }
         } catch (error) {
             console.error('Ошибка при создании задачи:', error);
         }
-    }, [handleClose]);
+    }, [createTask, handleClose, getTasks]);
 
-    const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask, tasksLoading]);
+    const visibleTask = useMemo(
+        () => tasks.find((task) => task.id === selectedTask),
+        [tasks, selectedTask]);
 
     return (
         <div className={styles.taskContent}>
@@ -83,8 +99,8 @@ export const TaskCardsWrapper = ({
 
                     <div className={styles.taskCardsWrapper}>
                         {tasks.map((task) => {
-                            const project = projects.find(project => project.id === task.projectId);
-                            const user = users.find(user => user.id === task.assigneeId);
+                            const project = projectsMap.get(task.projectId);
+                            const user = usersMap.get(task.assigneeId);
 
                             return (
                                 <div
@@ -95,7 +111,7 @@ export const TaskCardsWrapper = ({
                                         task={task}
                                         project={project}
                                         user={user}
-                                        onClick={(() => onCardClick(task.id, task.projectId))}
+                                        onCardClick={onCardClick}
                                     />
                                 </div>
                             );
@@ -106,19 +122,20 @@ export const TaskCardsWrapper = ({
 
                 <div className={styles.taskPage}>
                     {
-                        visibleTask?.title ?
+                        visibleTask?.title ? (
                             <div className={styles.taskPageInfo}>
-                            <TaskPage
-                                getTasks={getTasks}
-                                selectedTask={visibleTask}
-                                projects={projects}
-                                users={users}
-                            />
-                            </div>    :
+                                <TaskPage
+                                    getTasks={getTasks}
+                                    selectedTask={visibleTask}
+                                    projects={projects}
+                                    users={users}
+                                />
+                            </div>
+                        ) : (
                             <div className={styles.taskPageNoData}>
                                 <Empty />
                             </div>
-                        }
+                        )}
                 </div>
             </div>
 

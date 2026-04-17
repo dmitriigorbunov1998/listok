@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { Task } from '@/types';
 
@@ -20,6 +20,16 @@ export const useTasks = () => {
             setLoading(false);
         }
     }, []);
+
+    useEffect(() => {
+        getTasks();
+
+        const interval = setInterval(() => {
+            getTasks();
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [getTasks]);
 
     return { tasks, loading, error, getTasks };
 };
