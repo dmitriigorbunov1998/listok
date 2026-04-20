@@ -1,5 +1,5 @@
 import styles from './TaskCardsWrapper.module.css';
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { CreateTaskButton } from '@/components/TasksScreen/TaskCardsWrapper/CreateTaskButton/CreateTaskButton';
 import { TaskModalWindow } from '@/components/TasksScreen/TaskCardsWrapper/TaskModalWindow/TaskModalWindow';
 import { TaskCard } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCard';
@@ -24,9 +24,9 @@ export const TaskCardsWrapper = ({
 
     const hasFetchedRef = useRef(false);
 
-    const { projects, loading: projectsLoading, error: projectsError, getProjects } = useProjects();
-    const { tasks, loading: tasksLoading, error: tasksError, getTasks } = useTasks();
-    const { users, loading: usersLoading, error: usersError, getUsers } = useUsers();
+    const { projects, getProjects } = useProjects();
+    const { tasks, getTasks } = useTasks();
+    const { users, getUsers } = useUsers();
     const { createTask } = useCreateTask();
 
     useEffect(() => {
@@ -68,7 +68,7 @@ export const TaskCardsWrapper = ({
         }
     }, [handleClose]);
 
-    const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask, tasksLoading]);
+    const visibleTask = useMemo(() => tasks.find((task) => task.id === selectedTask), [tasks, selectedTask]);
 
     return (
         <div className={styles.taskContent}>

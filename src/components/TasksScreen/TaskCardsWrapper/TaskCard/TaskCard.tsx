@@ -2,7 +2,6 @@ import styles from './TaskCard.module.css';
 import { TaskCardStatus } from '@/components/TasksScreen/TaskCardsWrapper/TaskCard/TaskCardStatus/TaskCardStatus';
 import { Avatar } from 'antd';
 import { ClockCircleOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import React from 'react';
 import { Project, Task, User } from '@/types';
 
 export interface TaskCardProps {

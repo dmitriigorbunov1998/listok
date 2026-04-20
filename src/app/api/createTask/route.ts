@@ -24,6 +24,7 @@ export async function POST(request: NextRequest)  {
         return NextResponse.json(
             {
                 message: 'Successfully created task',
+                task: data,
             },
             {
                 status: 201,
