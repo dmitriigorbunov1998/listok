@@ -1,6 +1,18 @@
 import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+    output: 'standalone',
+
+    compress: true,
+
+    experimental: {
+        optimizePackageImports: ['antd'],
+    },
+
+    images: {
+        formats: ['image/avif', 'image/webp'],
+    },
+    
     async headers() {
         return [
             {
@@ -11,15 +23,6 @@ const nextConfig: NextConfig = {
                         value: "Accept-Encoding",
                     },
                 ],
-            },
-        ];
-    },
-    async rewrites() {
-        return [
-            // Перенаправляем все запросы на клиентский роутинг
-            {
-                source: '/task/:taskId',
-                destination: '/task/:taskId',
             },
         ];
     },
